@@ -1,5 +1,6 @@
 const mapArea = document.getElementById("map")
 let allLaureates = [];
+let which = 0;
 let count = {
     continent: {},
     country: {}
@@ -39,22 +40,19 @@ L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 }).addTo(map);
 let markerGroup = L.layerGroup().addTo(map)
 let continentGroup = L.layerGroup().addTo(map)
-
 //chargement des prix nobels
 async function loadNoblePrizes(url) {
     const res = await fetch(url);
     const data = await res.json();
     allLaureates.push(...data.laureates)
     countCoutryContinent();
-    displayContinent(allLaureates);
+
 }
 
 function displayMarkers(laureates) {
     continentGroup.clearLayers();
+    which = 1;
     laureates.forEach(laureate => {
-        console.log(laureate)
-        // console.log(laureate.birth.place.cityNow.latitude)
-
         if ((laureate.birth?.place?.cityNow?.latitude)) {
             var marker = L.marker([parseFloat(laureate.birth.place.cityNow.latitude) + parseFloat(laureate.id / 100000), parseFloat(laureate.birth.place.cityNow.longitude) + parseFloat(laureate.id / 100000)]).addTo(markerGroup);
             marker.bindPopup(`${laureate.knownName.en}`)
@@ -71,7 +69,6 @@ function countCoutryContinent () {
         if(laureate.birth?.place?.continent) {
             if (count.continent[`${(laureate.birth?.place?.continent.en).split(" ").join("")}`] === undefined) {
                 count.continent[`${(laureate.birth?.place?.continent.en).split(" ").join("")}`] = 1;
-                console.log(count)
             } else {
                 count.continent[`${(laureate.birth?.place?.continent.en).split(" ").join("")}`]++;
             }
@@ -79,7 +76,6 @@ function countCoutryContinent () {
         if(laureate.birth?.place?.country) {
             if (count.country[`${laureate.birth?.place?.country.en}`] === undefined) {
                 count.country[`${laureate.birth?.place?.country.en}`] = 1;
-                console.log(count)
             } else {
                 count.country[`${laureate.birth?.place?.country.en}`]++;
             }
@@ -90,6 +86,7 @@ function countCoutryContinent () {
 
 function displayContinent(laureates) {
     markerGroup.clearLayers();
+    which = -1;
     for (const cont in count.continent) {
         console.log(cont)
         var circle = L.circle([continentPos[`${cont}`].latitude, continentPos[`${cont}`].longitude], {
@@ -110,18 +107,17 @@ function displayContinent(laureates) {
     }
 }
 loadNoblePrizes('https://api.nobelprize.org/2.1/laureates?offset=0&limit=500');
+loadNoblePrizes('https://api.nobelprize.org/2.1/laureates?offset=500&limit=504');
+
 
 
 mapArea.addEventListener('wheel', () => {
     setTimeout(() => {
-        console.log(map.getZoom())
-       if (map.getZoom() > 4) {
+        console.log(which)
+       if (map.getZoom() > 4 && which <= 0)  {
         displayMarkers(allLaureates)
-       } else {
+       } else if (map.getZoom() < 5 && which >= 0){
         displayContinent(allLaureates)
        }
     }, 500)
 })
-// marker.on('click', () => {
-//     alert("hello")
-// })
