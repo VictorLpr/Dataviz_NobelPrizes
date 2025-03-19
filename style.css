@@ -1,31 +1,42 @@
 body {
     height: 95dvh;
 }
-#map { 
-    height: 80%; 
+
+#map {
+    margin-top: 65px;
+    height: 80%;
 }
 
 
-.filter-select  {
+.filter-select {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
-    height: 65px; /* Augmente la hauteur de la barre de navigation */
-    background-color: rgba(0, 0, 0, 0.7); /* Couleur semi-transparente */
+    height: 65px;
+    /* Augmente la hauteur de la barre de navigation */
+    background-color: rgba(0, 0, 0, 0.7);
+    /* Couleur semi-transparente */
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 15px;
     padding: 0 30px;
-    z-index: 1000; /* barre est au-dessus de la carte */
-    
+    z-index: 1000;
+    /* barre est au-dessus de la carte */
+
 }
 
-#gender-filter:hover, #category-filter:hover, #start-year:hover, #end-year:hover { 
-    transform:scale(1.7);
+select,
+button {
+    width: 120px;
+    height: 30px;
+    border: 1px solid #999;
+    font-size: 18px;
+    color: #1c87c9;
+    background-color: #eee;
+    border-radius: 5px;
+    box-shadow: 2px 2px #ccc;
 }
 
-#apply-filters:hover {
-    transition: 0.5 ease-in-out;
-}
+#apply-filters:hover {}
