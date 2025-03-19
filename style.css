@@ -1,10 +1,24 @@
-body {
-    height: 95dvh;
+:root {
+    --main:#3A5A40;
+    --firstColor:#344E41;
+    --secondColor:#588157;
+    --thirdColor:#DAD7CD;
+    --fourthColor:#A3B18A;
 }
 
-#map {
-    margin-top: 65px;
+body {
+    height: 95dvh;
+    padding: 0;
+    margin: 0;
+    background-color: var(--fourthColor);
+}
+.map-container {
     height: 80%;
+}
+#map {
+    border: #588157 solid 3px;
+    margin-top: 65px;
+    height: 100%;
 }
 
 
@@ -15,7 +29,8 @@ body {
     width: 100%;
     height: 65px;
     /* Augmente la hauteur de la barre de navigation */
-    background-color: rgba(0, 0, 0, 0.7);
+    background-color: var(--main);
+    opacity: 0.7;
     /* Couleur semi-transparente */
     display: flex;
     align-items: center;
@@ -31,8 +46,8 @@ button {
     height: 30px;
     border: 1px solid #999;
     font-size: 18px;
-    color: #1c87c9;
-    background-color: #eee;
+    color: var(--main);
+    background-color: var(--thirdColor);
     border-radius: 5px;
-    box-shadow: 2px 2px #ccc;
+    box-shadow: 2px 2px var(--firstColor);
 }
