@@ -48,7 +48,7 @@ L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 19,
     continuousWorld: true,
     noWrap: false,
-    Bound: L.latLngBounds([-256, 0], [0, 256]),
+    Bound: L.latLngBounds([-90, -180], [90, 180]),
     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 }).addTo(map);
 // var Stadia_StamenWatercolor = L.tileLayer('https://tiles.stadiamaps.com/tiles/stamen_watercolor/{z}/{x}/{y}.{ext}', {
@@ -68,22 +68,22 @@ for (let year = 1900; year <= 2025; year++) {
 
 };
 
-function updateEndYear () {
+function updateEndYear() {
     let selectedYear = endYear.value;
     endYear.innerHTML = `<option value="">end year</option>`;
     for (let year = startYear.value; year <= 2025; year++) {
         endYear.innerHTML += `<option value="${year}">${year}</option>`;
-    
+
     };
     if (selectedYear >= startYear.value) endYear.value = selectedYear;
 }
 
-function updateStartYear () {
+function updateStartYear() {
     let selectedYear = startYear.value;
     startYear.innerHTML = `<option value="">start year</option>`;
     for (let year = 1901; year <= endYear.value; year++) {
         startYear.innerHTML += `<option value="${year}">${year}</option>`;
-    
+
     };
     if (selectedYear <= endYear.value) startYear.value = selectedYear;
 }
@@ -161,7 +161,7 @@ function displayContinent() {
         var marker = L.marker([continentPos[`${cont}`].latitude, continentPos[`${cont}`].longitude], {
             icon: L.divIcon({
                 className: 'circle-label',
-                html: `${count.continent[cont]}`,
+                html: `<span style='color:#344E41'>${count.continent[cont]}</span>`,
                 iconSize: [50, 50],
                 iconAnchor: [10, 10]
             })
@@ -184,17 +184,16 @@ function displayCountry() {
         var marker = L.marker([count.country[`${cont}`].latitude, count.country[`${cont}`].longitude], {
             icon: L.divIcon({
                 className: 'cicle-label',
-                html: `${count.country[cont].number}`,
-                color : '#344E41',
+                html: `<span style='color:#344E41'>${count.country[cont].number}</span`,
                 iconSize: [50, 50],
                 iconAnchor: [5, 10]
             })
         }).addTo(countryGroup)
-        
+
     }
 }
 
-function clearAllLayers () {
+function clearAllLayers() {
     markerGroup.clearLayers();
     continentGroup.clearLayers();
     countryGroup.clearLayers();
