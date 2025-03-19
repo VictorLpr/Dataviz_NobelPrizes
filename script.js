@@ -33,20 +33,55 @@ let continentPos = {
 }
 
 //création de la carte
-var map = L.map('map').setView([0, 0], 1);
+var map = L.map('map', {
+    center: [0,0],
+    zoom: 2,
+    worldCopyJump: true,
+    maxBounds : [[-90,180],[90,180]],
+    maxBoundsViscosity: 0.0
+
+}).setView([35.9,34.2], 2);
 L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 19,
     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 }).addTo(map);
+
 let markerGroup = L.layerGroup().addTo(map)
 let continentGroup = L.layerGroup().addTo(map)
+
 //chargement des prix nobels
 async function loadNoblePrizes(url) {
     const res = await fetch(url);
     const data = await res.json();
     allLaureates.push(...data.laureates)
-    countCoutryContinent();
+    //même chose que :
+    //  data.laureates.forEach(laureate => {
+    //     allLaureates.push(laureate)
+    // })
+    countCountryContinent();
 
+}
+
+
+function countCountryContinent () {
+    allLaureates.forEach(laureate => {
+        if (laureate.birth?.place?.continent) {
+            if (count.continent[`${(laureate.birth?.place?.continent.en).split(" ").join("")}`] === undefined) {
+                count.continent[`${(laureate.birth?.place?.continent.en).split(" ").join("")}`] = 1;
+            } else {
+                count.continent[`${(laureate.birth?.place?.continent.en).split(" ").join("")}`]++;
+                console.log(count.continent)
+            }
+        }
+        if (laureate.birth?.place?.country) {
+            if (count.country[`${laureate.birth?.place?.country.en}`] === undefined) {
+                count.country[`${laureate.birth?.place?.country.en}`] = 1;
+            } else {
+                count.country[`${laureate.birth?.place?.country.en}`]++;
+            }
+        }
+    })
+    
 }
 
 function displayMarkers(laureates) {
@@ -64,30 +99,11 @@ function displayMarkers(laureates) {
 
 }
 
-function countCoutryContinent () {
-    allLaureates.forEach(laureate => {
-        if(laureate.birth?.place?.continent) {
-            if (count.continent[`${(laureate.birth?.place?.continent.en).split(" ").join("")}`] === undefined) {
-                count.continent[`${(laureate.birth?.place?.continent.en).split(" ").join("")}`] = 1;
-            } else {
-                count.continent[`${(laureate.birth?.place?.continent.en).split(" ").join("")}`]++;
-            }
-        }
-        if(laureate.birth?.place?.country) {
-            if (count.country[`${laureate.birth?.place?.country.en}`] === undefined) {
-                count.country[`${laureate.birth?.place?.country.en}`] = 1;
-            } else {
-                count.country[`${laureate.birth?.place?.country.en}`]++;
-            }
-        }
-    })
-
-}
-
 function displayContinent(laureates) {
     markerGroup.clearLayers();
     which = -1;
     for (const cont in count.continent) {
+        console.log(count.continent[cont])
         console.log(cont)
         var circle = L.circle([continentPos[`${cont}`].latitude, continentPos[`${cont}`].longitude], {
             color: 'blue',
@@ -108,8 +124,9 @@ function displayContinent(laureates) {
 }
 loadNoblePrizes('https://api.nobelprize.org/2.1/laureates?offset=0&limit=500');
 loadNoblePrizes('https://api.nobelprize.org/2.1/laureates?offset=500&limit=504');
-
-
+setTimeout(() => {
+    displayContinent(allLaureates)
+},800)
 
 mapArea.addEventListener('wheel', () => {
     setTimeout(() => {
