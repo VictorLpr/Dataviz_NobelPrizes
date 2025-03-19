@@ -4,3 +4,19 @@ body {
 #map { 
     height: 80%; 
 }
+
+
+.filter-select  {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 65px; /* Augmente la hauteur de la barre de navigation */
+    background-color: rgba(0, 0, 0, 0.7); /* Couleur semi-transparente */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    padding: 0 30px;
+    z-index: 1000; /* barre est au-dessus de la carte */
+}
