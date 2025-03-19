@@ -51,6 +51,12 @@ L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     Bound: L.latLngBounds([-256, 0], [0, 256]),
     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 }).addTo(map);
+// var Stadia_StamenWatercolor = L.tileLayer('https://tiles.stadiamaps.com/tiles/stamen_watercolor/{z}/{x}/{y}.{ext}', {
+// 	minZoom: 1,
+// 	maxZoom: 16,
+// 	attribution: '&copy; <a href="https://www.stadiamaps.com/" target="_blank">Stadia Maps</a> &copy; <a href="https://www.stamen.com/" target="_blank">Stamen Design</a> &copy; <a href="https://openmaptiles.org/" target="_blank">OpenMapTiles</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+// 	ext: 'jpg'
+// }).addTo(map);
 
 let markerGroup = L.layerGroup().addTo(map);
 let continentGroup = L.layerGroup().addTo(map);
@@ -147,14 +153,14 @@ function displayContinent() {
 
         // console.log(cont)
         var circle = L.circle([continentPos[`${cont}`].latitude, continentPos[`${cont}`].longitude], {
-            color: 'blue',
-            fillColor: 'blue',
+            color: '#588157',
+            fillColor: '#588157',
             fillOpacity: 0.5,
             radius: 500000
         }).addTo(continentGroup);
         var marker = L.marker([continentPos[`${cont}`].latitude, continentPos[`${cont}`].longitude], {
             icon: L.divIcon({
-                className: 'cicle-label',
+                className: 'circle-label',
                 html: `${count.continent[cont]}`,
                 iconSize: [50, 50],
                 iconAnchor: [10, 10]
@@ -170,8 +176,8 @@ function displayCountry() {
     which = 0;
     for (const cont in count.country) {
         var circle = L.circle([count.country[`${cont}`].latitude, count.country[`${cont}`].longitude], {
-            color: 'blue',
-            fillColor: 'blue',
+            color: '#588157',
+            fillColor: '#588157',
             fillOpacity: 0.5,
             radius: 100000
         }).addTo(countryGroup);
@@ -179,6 +185,7 @@ function displayCountry() {
             icon: L.divIcon({
                 className: 'cicle-label',
                 html: `${count.country[cont].number}`,
+                color : '#344E41',
                 iconSize: [50, 50],
                 iconAnchor: [5, 10]
             })
