@@ -3,11 +3,7 @@ let allLaureates = [];
 let which = 0;
 let count = {
     continent: {},
-    country: {france : {
-        number:10,
-        latitude: 42,
-        longitude: 10
-    }}
+    country: {}
 }
 let continentPos = {
     Africa: {
@@ -51,8 +47,9 @@ L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 }).addTo(map);
 
-let markerGroup = L.layerGroup().addTo(map)
-let continentGroup = L.layerGroup().addTo(map)
+let markerGroup = L.layerGroup().addTo(map);
+let continentGroup = L.layerGroup().addTo(map);
+let countryGroup = L.layerGroup().addTo(map);
 
 //chargement des prix nobels
 async function loadNoblePrizes(url) {
@@ -75,27 +72,26 @@ function countCountryContinent () {
                 count.continent[`${(laureate.birth?.place?.continent.en).split(" ").join("")}`] = 1;
             } else {
                 count.continent[`${(laureate.birth?.place?.continent.en).split(" ").join("")}`]++;
-                console.log(count.continent)
             }
         }
         if (laureate.birth?.place?.countryNow) {
-            if (count.country[`${laureate.birth?.place?.countryNow.en}`] === undefined) {
-                count.country[`${laureate.birth?.place?.countryNow.en}`] = {
+            if (count.country[`${(laureate.birth?.place?.countryNow.en).split(" ").join("")}`] === undefined) {
+                count.country[`${(laureate.birth?.place?.countryNow.en).split(" ").join("")}`] = {
                     number: 1,
                     latitude: laureate.birth.place.countryNow.latitude,
                     longitude: laureate.birth.place.countryNow.longitude    
                 }
             } else {
-                count.country[`${laureate.birth?.place?.countryNow.en}`].number++;
+                count.country[`${(laureate.birth?.place?.countryNow.en).split(" ").join("")}`].number++;
             }
         }
     })
-    console.log(count.country)
 
 }
 
 function displayMarkers(laureates) {
     continentGroup.clearLayers();
+    countryGroup.clearLayers();
     which = 1;
     laureates.forEach(laureate => {
         if ((laureate.birth?.place?.cityNow?.latitude)) {
@@ -111,10 +107,11 @@ function displayMarkers(laureates) {
 
 function displayContinent(laureates) {
     markerGroup.clearLayers();
+    countryGroup.clearLayers();
     which = -1;
     for (const cont in count.continent) {
-        console.log(count.continent[cont])
-        console.log(cont)
+   
+        // console.log(cont)
         var circle = L.circle([continentPos[`${cont}`].latitude, continentPos[`${cont}`].longitude], {
             color: 'blue',
             fillColor: 'blue',
@@ -132,6 +129,32 @@ function displayContinent(laureates) {
        
     }
 }
+
+
+function displayCountry(laureates) {
+    markerGroup.clearLayers();
+    continentGroup.clearLayers();
+    which = 0;
+    for (const cont in count.country) {
+        var circle = L.circle([count.country[`${cont}`].latitude,count.country[`${cont}`].longitude] , {
+            color: 'blue',
+            fillColor: 'blue',
+            fillOpacity: 0.5,
+            radius: 100000
+        }).addTo(countryGroup);
+        var marker = L.marker([count.country[`${cont}`].latitude,count.country[`${cont}`].longitude], {
+            icon: L.divIcon({
+                className: 'cicle-label',
+                html: `${count.country[cont].number}`,
+                iconSize: [50,50],
+                iconAnchor: [5,10]
+            })
+        }).addTo(countryGroup)
+       
+    }
+}
+
+
 loadNoblePrizes('https://api.nobelprize.org/2.1/laureates?offset=0&limit=500');
 loadNoblePrizes('https://api.nobelprize.org/2.1/laureates?offset=500&limit=504');
 setTimeout(() => {
@@ -141,10 +164,15 @@ setTimeout(() => {
 mapArea.addEventListener('wheel', () => {
     setTimeout(() => {
         console.log(map.getZoom())
+        console.log(which)
        if (map.getZoom() > 4 && which <= 0)  {
         displayMarkers(allLaureates)
-       } else if (map.getZoom() < 5 && which >= 0){
+       } else if (map.getZoom() == 4 && which!=0) {
+        displayCountry(allLaureates)
+       
+       } else if (map.getZoom() < 4 && which >= 0){
         displayContinent(allLaureates)
        }
     }, 500)
+    console.log(count.country)
 })
