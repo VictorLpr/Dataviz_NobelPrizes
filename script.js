@@ -3,7 +3,11 @@ let allLaureates = [];
 let which = 0;
 let count = {
     continent: {},
-    country: {}
+    country: {france : {
+        number:10,
+        latitude: 42,
+        longitude: 10
+    }}
 }
 let continentPos = {
     Africa: {
@@ -34,15 +38,16 @@ let continentPos = {
 
 //création de la carte
 var map = L.map('map', {
-    center: [0,0],
-    zoom: 2,
     worldCopyJump: true,
-    maxBounds : [[-90,180],[90,180]],
-    maxBoundsViscosity: 0.0
-
 }).setView([35.9,34.2], 2);
+
+map.setMinZoom(2);
+
 L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 19,
+    continuousWorld: true,
+    noWrap: false,
+    Bound: L.latLngBounds([-256,0],[0,256]),                                                                   
     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 }).addTo(map);
 
@@ -73,15 +78,20 @@ function countCountryContinent () {
                 console.log(count.continent)
             }
         }
-        if (laureate.birth?.place?.country) {
-            if (count.country[`${laureate.birth?.place?.country.en}`] === undefined) {
-                count.country[`${laureate.birth?.place?.country.en}`] = 1;
+        if (laureate.birth?.place?.countryNow) {
+            if (count.country[`${laureate.birth?.place?.countryNow.en}`] === undefined) {
+                count.country[`${laureate.birth?.place?.countryNow.en}`] = {
+                    number: 1,
+                    latitude: laureate.birth.place.countryNow.latitude,
+                    longitude: laureate.birth.place.countryNow.longitude    
+                }
             } else {
-                count.country[`${laureate.birth?.place?.country.en}`]++;
+                count.country[`${laureate.birth?.place?.countryNow.en}`].number++;
             }
         }
     })
-    
+    console.log(count.country)
+
 }
 
 function displayMarkers(laureates) {
@@ -130,7 +140,7 @@ setTimeout(() => {
 
 mapArea.addEventListener('wheel', () => {
     setTimeout(() => {
-        console.log(which)
+        console.log(map.getZoom())
        if (map.getZoom() > 4 && which <= 0)  {
         displayMarkers(allLaureates)
        } else if (map.getZoom() < 5 && which >= 0){
