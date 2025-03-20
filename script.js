@@ -165,7 +165,7 @@ function displayContinent() {
                 iconAnchor: [10, 10]
             })
         }).addTo(continentGroup)
-        circle.on("click", () => {
+        marker.on("click", () => {
             map.setView([continentPos[`${cont}`].latitude, continentPos[`${cont}`].longitude],4);
             displayCountry();
         })
