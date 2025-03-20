@@ -51,6 +51,7 @@ L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     Bound: L.latLngBounds([-90, -180], [90, 180]),
     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 }).addTo(map);
+
 // var Stadia_StamenWatercolor = L.tileLayer('https://tiles.stadiamaps.com/tiles/stamen_watercolor/{z}/{x}/{y}.{ext}', {
 // 	minZoom: 1,
 // 	maxZoom: 16,
@@ -150,8 +151,6 @@ function displayContinent() {
 
     which = -1;
     for (const cont in count.continent) {
-
-        // console.log(cont)
         var circle = L.circle([continentPos[`${cont}`].latitude, continentPos[`${cont}`].longitude], {
             color: '#588157',
             fillColor: '#588157',
@@ -166,6 +165,10 @@ function displayContinent() {
                 iconAnchor: [10, 10]
             })
         }).addTo(continentGroup)
+        circle.on("click", () => {
+            map.setView([continentPos[`${cont}`].latitude, continentPos[`${cont}`].longitude],4);
+            displayCountry();
+        })
 
     }
 }
