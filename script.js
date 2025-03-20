@@ -136,52 +136,56 @@ function displayMarkers(laureates) {
     which = 1;
 
     laureates.forEach(laureate => {
-        console.log(laureate)
-        let content = `name : ${laureate.knownName?.en ? laureate.knownName.en : laureate.fileName}<br> birth date : ${laureate.birth?.date ? laureate.birth.date : "unknown"}`
-        if (laureate.death) {
-            content += `<br> death date : ${laureate.death.date}`
-        };
-        content += `<br> category : ${laureate.nobelPrizes[0].category.en} <br> award year : ${laureate.nobelPrizes[0].awardYear}`;
-
+        
         if ((laureate.birth?.place?.cityNow?.latitude)) {
             var marker = L.marker([parseFloat(laureate.birth.place.cityNow.latitude) + parseFloat(laureate.id / 100000), parseFloat(laureate.birth.place.cityNow.longitude) + parseFloat(laureate.id / 100000)]).addTo(markerGroup);
-
+            
         } else if ((laureate.birth?.place?.countryNow)) {
             var marker = L.marker([laureate.birth.place.countryNow.latitude, laureate.birth.place.countryNow.longitude]).addTo(markerGroup);
             
         }
-        if (marker) {
-
-            marker.bindPopup(content)
-            
-            // marker.on("click",async () => {
-            //     console.log("ok")
-            //     console.log(content)
-            //     let img ="https:"
-            //     img += await loadImg(laureate.wikipedia.english)
-            //     console.log(img)
-            //     // "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9b/Jos%C3%A9_Echegaray_y_Eizaguirre.jpg/220px-Jos%C3%A9_Echegaray_y_Eizaguirre.jpg"
-            //     content += `<img src="${img}">`
-            //     marker.bindPopup(content)
+        if (marker) {            
+            marker.on("click",async () => {
+                let content = `name : ${laureate.knownName?.en ? laureate.knownName.en : laureate.fileName}<br> birth date : ${laureate.birth?.date ? laureate.birth.date : "unknown"}`
+                if (laureate.death) {
+                    content += `<br> death date : ${laureate.death.date}`
+                };
+                content += `<br> category : ${laureate.nobelPrizes[0].category.en} <br> award year : ${laureate.nobelPrizes[0].awardYear}`;
+                let img = await wikiImgUrl(laureate.wikipedia.slug)
+                content += `<br><img src="${img}" style="width:100px;">`
+                marker.bindPopup(content).openPopup();
 
 
-            // })
+            })
         }
     });
 
 }
-async function loadImg(url) {
-    const res = await fetch(url)
-    const data = await res.text();
-    let x = `<span><img src="`
-    console.log(data + "ok")
-    let i = data.indexOf(x) + x.length;
-    let img = "";
-    while (data[i] != `"`) {
-        img += data[i]
-        i++;
-    }
-    return img
+async function wikiImgUrl(article) {
+    const url = `https://en.wikipedia.org/w/api.php?action=query&prop=images&titles=${encodeURIComponent(article)}&format=json&origin=*`;
+    const response = await fetch(url);
+    const data = await response.json();
+    const pages = Object.values(data.query.pages);
+    let imageTitles = [];
+    console.log(pages[0]);
+    if (!pages[0].images) return "";
+    imageTitles = pages[0].images.map((img) => img.title);
+    // for (let id in pages) {
+    //     console.log(pages);
+    //     if (pages[id].images) {
+    //         imageTitles = pages[id].images.map((img) => img.title);
+    //     }
+    // }
+    article = article.split("_").join(" ");
+    console.log(article.slice(0,4).toLowerCase())
+    imageTitles = imageTitles.filter((img) => img.toLowerCase().includes(article.slice(0,4).toLowerCase()));
+    if (imageTitles.length == 0) return "";
+    const imgResponse = await fetch(`https://en.wikipedia.org/w/api.php?action=query&titles=${encodeURIComponent(imageTitles[0])}&prop=imageinfo&iiprop=url&format=json&origin=*`);
+    const imgData = await imgResponse.json();
+    const imgPages = Object.values(imgData.query.pages);
+    console.log(imgPages)
+    console.log(imgPages[0]);
+    return imgPages[0].imageinfo[0].url;
 }
 
 function displayContinent() {
