@@ -132,7 +132,6 @@ function countCountryContinent(laureates) {
 
 function displayMarkers() {
     clearAllLayers();
-
     which = 1;
     filteredLaureates.forEach(laureate => {
         if ((laureate.birth?.place?.cityNow?.latitude)) {
@@ -192,6 +191,11 @@ function displayCountry() {
                 iconAnchor: [5, 10]
             })
         }).addTo(countryGroup)
+        marker.on("click", () => {
+            map.setView([count.country[`${cont}`].latitude, count.country[`${cont}`].longitude], 5);
+            filterByCountry(cont);
+            displayMarkers();
+        })
 
     }
 }
@@ -216,10 +220,21 @@ function filterLaureates() {
     whichDisplay(filteredLaureates)
 }
 
+function filterByCountry(country) {
+    let array = [];
+   for (let i = 0; i < filteredLaureates.length;i++) {
+    if(filteredLaureates[i].birth?.place?.countryNow.en == country) {
+        array.push(filteredLaureates[i]);
+    }
+   }
+    filteredLaureates = array;
+}
+
 function whichDisplay(laureate) {
     if (map.getZoom() > 4 && which != 1) {
         displayMarkers(laureate)
     } else if (map.getZoom() == 4 && which != 0) {
+        filterLaureates();
         displayCountry()
 
     } else if (map.getZoom() < 4 && which != -1) {
