@@ -7,6 +7,7 @@ const endYear = document.getElementById("end-year")
 
 let allLaureates = [];
 let filteredLaureates = [];
+let filteredBycountry = [];
 let which = 0;
 let count = {};
 let continentPos = {
@@ -130,10 +131,11 @@ function countCountryContinent(laureates) {
 
 }
 
-function displayMarkers() {
+function displayMarkers(laureates) {
     clearAllLayers();
+
     which = 1;
-    filteredLaureates.forEach(laureate => {
+    laureates.forEach(laureate => {
         if ((laureate.birth?.place?.cityNow?.latitude)) {
             var marker = L.marker([parseFloat(laureate.birth.place.cityNow.latitude) + parseFloat(laureate.id / 100000), parseFloat(laureate.birth.place.cityNow.longitude) + parseFloat(laureate.id / 100000)]).addTo(markerGroup);
             marker.bindPopup(`${laureate.knownName.en}`)
@@ -194,7 +196,7 @@ function displayCountry() {
         marker.on("click", () => {
             map.setView([count.country[`${cont}`].latitude, count.country[`${cont}`].longitude], 5);
             filterByCountry(cont);
-            displayMarkers();
+            displayMarkers(filteredBycountry);
         })
 
     }
@@ -221,20 +223,18 @@ function filterLaureates() {
 }
 
 function filterByCountry(country) {
-    let array = [];
+   filteredBycountry = [];
    for (let i = 0; i < filteredLaureates.length;i++) {
     if(filteredLaureates[i].birth?.place?.countryNow.en == country) {
-        array.push(filteredLaureates[i]);
+        filteredBycountry.push(filteredLaureates[i]);
     }
    }
-    filteredLaureates = array;
 }
 
 function whichDisplay(laureate) {
     if (map.getZoom() > 4 && which != 1) {
         displayMarkers(laureate)
     } else if (map.getZoom() == 4 && which != 0) {
-        filterLaureates();
         displayCountry()
 
     } else if (map.getZoom() < 4 && which != -1) {
@@ -253,7 +253,7 @@ setTimeout(() => {
 
 mapArea.addEventListener('wheel', () => {
     setTimeout(() => {
-        whichDisplay();
+        whichDisplay(filteredLaureates);
     }, 500)
 })
 
