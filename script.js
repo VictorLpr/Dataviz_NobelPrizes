@@ -134,21 +134,54 @@ function countCountryContinent(laureates) {
 function displayMarkers(laureates) {
     clearAllLayers();
     which = 1;
+
     laureates.forEach(laureate => {
-        let content = `name : ${laureate.knownName.en}<br> birth date : ${laureate.birth.date}`
+        console.log(laureate)
+        let content = `name : ${laureate.knownName?.en ? laureate.knownName.en : laureate.fileName}<br> birth date : ${laureate.birth?.date ? laureate.birth.date : "unknown"}`
         if (laureate.death) {
-            content += `<br> death date : ${laureate.death.date}` };
+            content += `<br> death date : ${laureate.death.date}`
+        };
         content += `<br> category : ${laureate.nobelPrizes[0].category.en} <br> award year : ${laureate.nobelPrizes[0].awardYear}`;
 
         if ((laureate.birth?.place?.cityNow?.latitude)) {
             var marker = L.marker([parseFloat(laureate.birth.place.cityNow.latitude) + parseFloat(laureate.id / 100000), parseFloat(laureate.birth.place.cityNow.longitude) + parseFloat(laureate.id / 100000)]).addTo(markerGroup);
-            marker.bindPopup(content)
+
         } else if ((laureate.birth?.place?.countryNow)) {
             var marker = L.marker([laureate.birth.place.countryNow.latitude, laureate.birth.place.countryNow.longitude]).addTo(markerGroup);
+            
+        }
+        if (marker) {
+
             marker.bindPopup(content)
+            
+            // marker.on("click",async () => {
+            //     console.log("ok")
+            //     console.log(content)
+            //     let img ="https:"
+            //     img += await loadImg(laureate.wikipedia.english)
+            //     console.log(img)
+            //     // "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9b/Jos%C3%A9_Echegaray_y_Eizaguirre.jpg/220px-Jos%C3%A9_Echegaray_y_Eizaguirre.jpg"
+            //     content += `<img src="${img}">`
+            //     marker.bindPopup(content)
+
+
+            // })
         }
     });
 
+}
+async function loadImg(url) {
+    const res = await fetch(url)
+    const data = await res.text();
+    let x = `<span><img src="`
+    console.log(data + "ok")
+    let i = data.indexOf(x) + x.length;
+    let img = "";
+    while (data[i] != `"`) {
+        img += data[i]
+        i++;
+    }
+    return img
 }
 
 function displayContinent() {
@@ -171,7 +204,7 @@ function displayContinent() {
             })
         }).addTo(continentGroup)
         marker.on("click", () => {
-            map.setView([continentPos[`${cont}`].latitude, continentPos[`${cont}`].longitude],4);
+            map.setView([continentPos[`${cont}`].latitude, continentPos[`${cont}`].longitude], 4);
             displayCountry();
         })
     }
@@ -226,12 +259,12 @@ function filterLaureates() {
 }
 
 function filterByCountry(country) {
-   filteredBycountry = [];
-   for (let i = 0; i < filteredLaureates.length;i++) {
-    if(filteredLaureates[i].birth?.place?.countryNow.en == country) {
-        filteredBycountry.push(filteredLaureates[i]);
+    filteredBycountry = [];
+    for (let i = 0; i < filteredLaureates.length; i++) {
+        if (filteredLaureates[i].birth?.place?.countryNow.en == country) {
+            filteredBycountry.push(filteredLaureates[i]);
+        }
     }
-   }
 }
 
 function whichDisplay(laureate) {
@@ -247,10 +280,10 @@ function whichDisplay(laureate) {
 
 loadNoblePrizes('https://api.nobelprize.org/2.1/laureates?offset=0&limit=500');
 loadNoblePrizes('https://api.nobelprize.org/2.1/laureates?offset=500&limit=504');
+// console.log(loadImg("https://www.nobelprize.org/prizes/physics/2024/hopfield/facts/"))
 setTimeout(() => {
     filteredLaureates = allLaureates;
     countCountryContinent(allLaureates);
-    console.log(allLaureates[0].nobelPrizes[0].category.en);
     displayContinent(filteredLaureates)
 }, 800)
 
