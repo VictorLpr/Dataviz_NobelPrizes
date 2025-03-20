@@ -133,15 +133,19 @@ function countCountryContinent(laureates) {
 
 function displayMarkers(laureates) {
     clearAllLayers();
-
     which = 1;
     laureates.forEach(laureate => {
+        let content = `name : ${laureate.knownName.en}<br> birth date : ${laureate.birth.date}`
+        if (laureate.death) {
+            content += `<br> death date : ${laureate.death.date}` };
+        content += `<br> category : ${laureate.nobelPrizes[0].category.en} <br> award year : ${laureate.nobelPrizes[0].awardYear}`;
+
         if ((laureate.birth?.place?.cityNow?.latitude)) {
             var marker = L.marker([parseFloat(laureate.birth.place.cityNow.latitude) + parseFloat(laureate.id / 100000), parseFloat(laureate.birth.place.cityNow.longitude) + parseFloat(laureate.id / 100000)]).addTo(markerGroup);
-            marker.bindPopup(`${laureate.knownName.en}`)
+            marker.bindPopup(content)
         } else if ((laureate.birth?.place?.countryNow)) {
             var marker = L.marker([laureate.birth.place.countryNow.latitude, laureate.birth.place.countryNow.longitude]).addTo(markerGroup);
-            marker.bindPopup(`${laureate.knownName.en}`)
+            marker.bindPopup(content)
         }
     });
 
@@ -170,7 +174,6 @@ function displayContinent() {
             map.setView([continentPos[`${cont}`].latitude, continentPos[`${cont}`].longitude],4);
             displayCountry();
         })
-
     }
 }
 
@@ -247,7 +250,7 @@ loadNoblePrizes('https://api.nobelprize.org/2.1/laureates?offset=500&limit=504')
 setTimeout(() => {
     filteredLaureates = allLaureates;
     countCountryContinent(allLaureates);
-
+    console.log(allLaureates[0].nobelPrizes[0].category.en);
     displayContinent(filteredLaureates)
 }, 800)
 
