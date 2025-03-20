@@ -170,21 +170,12 @@ async function wikiImgUrl(article) {
     console.log(pages[0]);
     if (!pages[0].images) return "";
     imageTitles = pages[0].images.map((img) => img.title);
-    // for (let id in pages) {
-    //     console.log(pages);
-    //     if (pages[id].images) {
-    //         imageTitles = pages[id].images.map((img) => img.title);
-    //     }
-    // }
     article = article.split("_").join(" ");
-    console.log(article.slice(0,4).toLowerCase())
     imageTitles = imageTitles.filter((img) => img.toLowerCase().includes(article.slice(0,4).toLowerCase()));
     if (imageTitles.length == 0) return "";
     const imgResponse = await fetch(`https://en.wikipedia.org/w/api.php?action=query&titles=${encodeURIComponent(imageTitles[0])}&prop=imageinfo&iiprop=url&format=json&origin=*`);
     const imgData = await imgResponse.json();
     const imgPages = Object.values(imgData.query.pages);
-    console.log(imgPages)
-    console.log(imgPages[0]);
     return imgPages[0].imageinfo[0].url;
 }
 
