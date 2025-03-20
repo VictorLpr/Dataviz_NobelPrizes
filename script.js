@@ -127,8 +127,24 @@ function countCountryContinent(laureates) {
             }
         }
     })
-    console.log(count)
 
+}
+
+async function wikiImgUrl(article) {
+    const url = `https://en.wikipedia.org/w/api.php?action=query&prop=images&titles=${encodeURIComponent(article)}&format=json&origin=*`;
+    const response = await fetch(url);
+    const data = await response.json();
+    const pages = Object.values(data.query.pages);
+    let imageTitles = [];
+    if (!pages[0].images) return "";
+    imageTitles = pages[0].images.map((img) => img.title);
+    article = article.split("_").join(" ");
+    imageTitles = imageTitles.filter((img) => img.toLowerCase().includes(article.slice(0,4).toLowerCase()));
+    if (imageTitles.length == 0) return "";
+    const imgResponse = await fetch(`https://en.wikipedia.org/w/api.php?action=query&titles=${encodeURIComponent(imageTitles[0])}&prop=imageinfo&iiprop=url&format=json&origin=*`);
+    const imgData = await imgResponse.json();
+    const imgPages = Object.values(imgData.query.pages);
+    return imgPages[0].imageinfo[0].url;
 }
 
 function displayMarkers(laureates) {
@@ -146,13 +162,13 @@ function displayMarkers(laureates) {
         }
         if (marker) {            
             marker.on("click",async () => {
-                let content = `name : ${laureate.knownName?.en ? laureate.knownName.en : laureate.fileName}<br> birth date : ${laureate.birth?.date ? laureate.birth.date : "unknown"}`
+                let content = `<div class="pop-up"><span>name</span> : ${laureate.knownName?.en ? laureate.knownName.en : laureate.fileName}<br><span>birth date</span> : ${laureate.birth?.date ? laureate.birth.date : "unknown"}`
                 if (laureate.death) {
-                    content += `<br> death date : ${laureate.death.date}`
+                    content += `<br> <span>death date</span> : ${laureate.death.date}`
                 };
-                content += `<br> category : ${laureate.nobelPrizes[0].category.en} <br> award year : ${laureate.nobelPrizes[0].awardYear}`;
+                content += `<br><span>category</span> : ${laureate.nobelPrizes[0].category.en} <br> <span>award year</span> : ${laureate.nobelPrizes[0].awardYear}<br><span>motivation</span> : ${laureate.nobelPrizes[0].motivation.en}`;
                 let img = await wikiImgUrl(laureate.wikipedia.slug)
-                content += `<br><img src="${img}" style="width:100px;">`
+                content += `<br><img src="${img}" style="width:100px;"</div>`
                 marker.bindPopup(content).openPopup();
 
 
@@ -160,23 +176,6 @@ function displayMarkers(laureates) {
         }
     });
 
-}
-async function wikiImgUrl(article) {
-    const url = `https://en.wikipedia.org/w/api.php?action=query&prop=images&titles=${encodeURIComponent(article)}&format=json&origin=*`;
-    const response = await fetch(url);
-    const data = await response.json();
-    const pages = Object.values(data.query.pages);
-    let imageTitles = [];
-    console.log(pages[0]);
-    if (!pages[0].images) return "";
-    imageTitles = pages[0].images.map((img) => img.title);
-    article = article.split("_").join(" ");
-    imageTitles = imageTitles.filter((img) => img.toLowerCase().includes(article.slice(0,4).toLowerCase()));
-    if (imageTitles.length == 0) return "";
-    const imgResponse = await fetch(`https://en.wikipedia.org/w/api.php?action=query&titles=${encodeURIComponent(imageTitles[0])}&prop=imageinfo&iiprop=url&format=json&origin=*`);
-    const imgData = await imgResponse.json();
-    const imgPages = Object.values(imgData.query.pages);
-    return imgPages[0].imageinfo[0].url;
 }
 
 function displayContinent() {
@@ -195,7 +194,7 @@ function displayContinent() {
                 className: 'circle-label',
                 html: `<span style='color:#344E41'>${count.continent[cont]}</span>`,
                 iconSize: [50, 50],
-                iconAnchor: [10, 10]
+                iconAnchor: [count.continent[cont]>100 ? 10 : 7, 10]
             })
         }).addTo(continentGroup)
         marker.on("click", () => {
@@ -210,18 +209,18 @@ function displayCountry() {
     clearAllLayers();
     which = 0;
     for (const cont in count.country) {
-        var circle = L.circle([count.country[`${cont}`].latitude, count.country[`${cont}`].longitude], {
+        var circle = L.circle([cont == "UnitedKingdom" ? 51.6 : count.country[`${cont}`].latitude,cont == "UnitedKingdom" ? -0.79 : count.country[`${cont}`].longitude], {
             color: '#588157',
             fillColor: '#588157',
-            fillOpacity: 0.5,
+            fillOpacity: 0.8,
             radius: 100000
         }).addTo(countryGroup);
-        var marker = L.marker([count.country[`${cont}`].latitude, count.country[`${cont}`].longitude], {
+        var marker = L.marker([cont == "UnitedKingdom" ? 51.6 : count.country[`${cont}`].latitude,cont == "UnitedKingdom" ? -0.79 : count.country[`${cont}`].longitude], {
             icon: L.divIcon({
                 className: 'cicle-label',
-                html: `<span style='color:#344E41'>${count.country[cont].number}</span`,
+                html: `<span style='color:white'>${count.country[cont].number}</span`,
                 iconSize: [50, 50],
-                iconAnchor: [5, 10]
+                iconAnchor: [count.country[cont].number > 100 ? 10 : count.country[cont].number > 10 ? 7 : 4, 10]
             })
         }).addTo(countryGroup)
         marker.on("click", () => {
@@ -255,9 +254,11 @@ function filterLaureates() {
 
 function filterByCountry(country) {
     filteredBycountry = [];
+    console.log(country)
     for (let i = 0; i < filteredLaureates.length; i++) {
-        if (filteredLaureates[i].birth?.place?.countryNow.en == country) {
+        if (filteredLaureates[i].birth?.place?.countryNow.en.split(" ").join("") == country) {
             filteredBycountry.push(filteredLaureates[i]);
+            console.log(filteredBycountry)
         }
     }
 }

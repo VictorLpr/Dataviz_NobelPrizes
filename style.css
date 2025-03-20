@@ -61,3 +61,37 @@ button {
     font-family: 'Urbanist';
     font-weight: 600;
 }
+
+.pop-up {
+    display: block;
+    width: 350px;
+    align-items: center;
+    text-align: center;
+    background-color: var(--thirdColor);
+}
+.pop-up span {
+    text-decoration: underline;
+    font-weight: 800;
+}
+.leaflet-popup-content-wrapper {
+    background-color: var(--thirdColor);
+    color: var(--main);
+    width: 400px;
+    font-family: 'Urbanist';
+    font-weight: 600;
+    font-size: 18px;
+    border-radius: 10px;
+    box-shadow: var(--firstColor) 2px 2px;
+}
+.pop-up img {
+    width: 200px;
+    border-radius: 30px;
+    margin: 10px;
+    box-shadow: rgba(0, 0, 0, 0.582) 2px 2px;
+}
+
+.leaflet-popup-tip {
+    background-color: var(--thirdColor);
+    box-shadow: var(--firstColor) 2px 2px;
+
+}
