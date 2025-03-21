@@ -139,6 +139,7 @@ async function wikiImgUrl(article) {
     const data = await response.json();
     const pages = Object.values(data.query.pages);
     let imageTitles = [];
+    console.log(data)
     console.log(pages)
     if (!pages[0].images) return "";
     imageTitles = pages[0].images.map((img) => img.title);
@@ -167,13 +168,13 @@ function displayMarkers(laureates) {
         if (marker) {            
             marker.on("click",async () => {
                 console.log(laureate)
-                let content = `<span>name</span> : ${laureate.knownName?.en ? laureate.knownName.en : laureate.fileName}<br><span>birth date</span> : ${laureate.birth?.date ? laureate.birth.date : "unknown"}`
-                if (laureate.death) {
-                    content += `<br> <span>death date</span> : ${laureate.death.date}`
-                };
-                content += `<br><span>category</span> : ${laureate.nobelPrizes[0].category.en} <br> <span>award year</span> : ${laureate.nobelPrizes[0].awardYear}<br><span>motivation</span> : ${laureate.nobelPrizes[0].motivation.en}`;
                 let img = await wikiImgUrl(laureate.wikipedia.slug)
-                content += `<br><img src="${img}">`
+                let content = img ? `<img src="${img}">` : "";
+                content += `<p><span>Name</span> : ${laureate.knownName?.en ? laureate.knownName.en : laureate.fileName}</p><p><span>Birth date</span> : ${laureate.birth?.date ? laureate.birth.date : "unknown"}</p>`
+                if (laureate.death) {
+                    content += `<p> <span>Death date</span> : ${laureate.death.date}</p>`
+                };
+                content += `<p><span>Category</span> : ${laureate.nobelPrizes[0].category.en}</p><p><span>Award year</span> : ${laureate.nobelPrizes[0].awardYear}</p><p><span>motivation</span> : ${laureate.nobelPrizes[0].motivation.en}</p>`;
                 marker.bindPopup(content).openPopup();
 
 
