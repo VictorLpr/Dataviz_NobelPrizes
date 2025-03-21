@@ -7,9 +7,8 @@ const endYear = document.getElementById("end-year")
 
 let allLaureates = [];
 let filteredLaureates = [];
-let filteredBycountry = [];
+// let filteredBycountry = [];
 let which = 0;
-let count = {};
 let continentPos = {
     Africa: {
         latitude: 7.4,
@@ -103,30 +102,34 @@ async function loadNoblePrizes(url) {
 
 
 function countCountryContinent(laureates) {
-    count = {
+    let count = {
         continent: {},
         country: {}
     }
     laureates.forEach(laureate => {
         if (laureate.birth?.place?.continent) {
-            if (count.continent[`${(laureate.birth?.place?.continent.en).split(" ").join("")}`] === undefined) {
-                count.continent[`${(laureate.birth?.place?.continent.en).split(" ").join("")}`] = 1;
+            let countryName =(laureate.birth.place.continent.en).split(" ").join("")
+            if (count.continent[countryName] === undefined) {
+                count.continent[countryName] = 1;
             } else {
-                count.continent[`${(laureate.birth?.place?.continent.en).split(" ").join("")}`]++;
+                count.continent[countryName]++;
             }
         }
         if (laureate.birth?.place?.countryNow) {
-            if (count.country[`${(laureate.birth?.place?.countryNow.en).split(" ").join("")}`] === undefined) {
-                count.country[`${(laureate.birth?.place?.countryNow.en).split(" ").join("")}`] = {
+            let continentName = (laureate.birth.place.countryNow.en).split(" ").join("")
+            if (count.country[continentName] === undefined) {
+                count.country[continentName] = {
                     number: 1,
                     latitude: laureate.birth.place.countryNow.latitude,
                     longitude: laureate.birth.place.countryNow.longitude
                 }
             } else {
-                count.country[`${(laureate.birth?.place?.countryNow.en).split(" ").join("")}`].number++;
+                count.country[continentName].number++;
             }
         }
     })
+    console.log(count)
+    return count
 
 }
 
@@ -140,7 +143,7 @@ async function wikiImgUrl(article) {
     if (!pages[0].images) return "";
     imageTitles = pages[0].images.map((img) => img.title);
     article = article.split("_").join(" ");
-    imageTitles = imageTitles.filter((img) => img.toLowerCase().includes(article.slice(0,4).toLowerCase()));
+    imageTitles = imageTitles.filter((img) => img.toLowerCase().includes(article.slice(0,3).toLowerCase()));
     if (imageTitles.length == 0) return "";
     const imgResponse = await fetch(`https://en.wikipedia.org/w/api.php?action=query&titles=${encodeURIComponent(imageTitles[0])}&prop=imageinfo&iiprop=url&format=json&origin=*`);
     const imgData = await imgResponse.json();
@@ -163,13 +166,14 @@ function displayMarkers(laureates) {
         }
         if (marker) {            
             marker.on("click",async () => {
+                console.log(laureate)
                 let content = `<span>name</span> : ${laureate.knownName?.en ? laureate.knownName.en : laureate.fileName}<br><span>birth date</span> : ${laureate.birth?.date ? laureate.birth.date : "unknown"}`
                 if (laureate.death) {
                     content += `<br> <span>death date</span> : ${laureate.death.date}`
                 };
                 content += `<br><span>category</span> : ${laureate.nobelPrizes[0].category.en} <br> <span>award year</span> : ${laureate.nobelPrizes[0].awardYear}<br><span>motivation</span> : ${laureate.nobelPrizes[0].motivation.en}`;
                 let img = await wikiImgUrl(laureate.wikipedia.slug)
-                content += `<br><img src="${img}" style="width:100px;">`
+                content += `<br><img src="${img}">`
                 marker.bindPopup(content).openPopup();
 
 
@@ -179,7 +183,7 @@ function displayMarkers(laureates) {
 
 }
 
-function displayContinent() {
+function displayContinent(count) {
     clearAllLayers();
 
     which = -1;
@@ -200,15 +204,16 @@ function displayContinent() {
         }).addTo(continentGroup)
         marker.on("click", () => {
             map.setView([continentPos[`${cont}`].latitude, continentPos[`${cont}`].longitude], 4);
-            displayCountry();
+            displayCountry(countCountryContinent(filteredLaureates));
         })
     }
 }
 
 
-function displayCountry() {
+function displayCountry(count) {
     clearAllLayers();
     which = 0;
+    console.log(count)
     for (const cont in count.country) {
         var circle = L.circle([cont == "UnitedKingdom" ? 51.6 : count.country[`${cont}`].latitude,cont == "UnitedKingdom" ? -0.79 : count.country[`${cont}`].longitude], {
             color: '#588157',
@@ -221,13 +226,12 @@ function displayCountry() {
                 className: 'cicle-label',
                 html: `<span style='color:white'>${count.country[cont].number}</span`,
                 iconSize: [50, 50],
-                iconAnchor: [count.country[cont].number > 100 ? 10 : count.country[cont].number > 10 ? 7 : 4, 10]
+                iconAnchor: [count.country[cont].number > 100 ? 10 : count.country[cont].number >= 10 ? 7 : 4, 10]
             })
         }).addTo(countryGroup)
         marker.on("click", () => {
             map.setView([count.country[`${cont}`].latitude, count.country[`${cont}`].longitude], 5);
-            filterByCountry(cont);
-            displayMarkers(filteredBycountry);
+            displayMarkers(filterByCountry(cont));
         })
 
     }
@@ -248,28 +252,28 @@ function filterLaureates() {
 
         return genderMatch && categoryMatch && startYearFilter && endYearFilter;
     })
-    countCountryContinent(filteredLaureates);
     which = 2;
     whichDisplay(filteredLaureates)
 }
 
 function filterByCountry(country) {
-    filteredBycountry = [];
+    let filteredBycountry = [];
     for (let i = 0; i < filteredLaureates.length; i++) {
         if (filteredLaureates[i].birth?.place?.countryNow.en.split(" ").join("") == country) {
             filteredBycountry.push(filteredLaureates[i]);
         }
     }
+    return filteredBycountry
 }
 
 function whichDisplay(laureate) {
     if (map.getZoom() > 4 && which != 1) {
         displayMarkers(laureate)
     } else if (map.getZoom() == 4 && which != 0) {
-        displayCountry()
+        displayCountry(countCountryContinent(laureate))
 
     } else if (map.getZoom() < 4 && which != -1) {
-        displayContinent()
+        displayContinent(countCountryContinent(laureate))
     }
 }
 
@@ -277,8 +281,7 @@ loadNoblePrizes('https://api.nobelprize.org/2.1/laureates?offset=0&limit=500');
 loadNoblePrizes('https://api.nobelprize.org/2.1/laureates?offset=500&limit=504');
 setTimeout(() => {
     filteredLaureates = allLaureates;
-    countCountryContinent(allLaureates);
-    displayContinent(filteredLaureates)
+    displayContinent(countCountryContinent(filteredLaureates))
 }, 800)
 
 mapArea.addEventListener('wheel', () => {
