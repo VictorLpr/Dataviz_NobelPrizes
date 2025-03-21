@@ -188,22 +188,23 @@ function displayContinent(count) {
 
     which = -1;
     for (const cont in count.continent) {
-        var circle = L.circle([continentPos[`${cont}`].latitude, continentPos[`${cont}`].longitude], {
+        let latLong = [continentPos[`${cont}`].latitude, continentPos[`${cont}`].longitude]
+        var circle = L.circle(latLong, {
             color: '#588157',
             fillColor: '#588157',
-            fillOpacity: 0.5,
+            fillOpacity: 0.8,
             radius: 500000
         }).addTo(continentGroup);
-        var marker = L.marker([continentPos[`${cont}`].latitude, continentPos[`${cont}`].longitude], {
+        var marker = L.marker(latLong, {
             icon: L.divIcon({
                 className: 'circle-label',
-                html: `<span style='color:#344E41'>${count.continent[cont]}</span>`,
+                html: `<span class="circle">${count.continent[cont]}</span>`,
                 iconSize: [50, 50],
-                iconAnchor: [count.continent[cont]>100 ? 10 : 7, 10]
+                iconAnchor: [count.continent[cont] > 100 ? 10 : 7, 10]
             })
         }).addTo(continentGroup)
         marker.on("click", () => {
-            map.setView([continentPos[`${cont}`].latitude, continentPos[`${cont}`].longitude], 4);
+            map.setView(latLong, 4);
             displayCountry(countCountryContinent(filteredLaureates));
         })
     }
@@ -215,22 +216,23 @@ function displayCountry(count) {
     which = 0;
     console.log(count)
     for (const cont in count.country) {
-        var circle = L.circle([cont == "UnitedKingdom" ? 51.6 : count.country[`${cont}`].latitude,cont == "UnitedKingdom" ? -0.79 : count.country[`${cont}`].longitude], {
+        let latLong = [cont == "UnitedKingdom" ? 51.6 : count.country[`${cont}`].latitude,cont == "UnitedKingdom" ? -0.79 : count.country[`${cont}`].longitude]
+        var circle = L.circle(latLong, {
             color: '#588157',
             fillColor: '#588157',
             fillOpacity: 0.8,
             radius: 100000
         }).addTo(countryGroup);
-        var marker = L.marker([cont == "UnitedKingdom" ? 51.6 : count.country[`${cont}`].latitude,cont == "UnitedKingdom" ? -0.79 : count.country[`${cont}`].longitude], {
+        var marker = L.marker(latLong, {
             icon: L.divIcon({
-                className: 'cicle-label',
-                html: `<span style='color:white'>${count.country[cont].number}</span`,
+                className: 'circle-label',
+                html: `<span class='circle'>${count.country[cont].number}</span>`,
                 iconSize: [50, 50],
                 iconAnchor: [count.country[cont].number > 100 ? 10 : count.country[cont].number >= 10 ? 7 : 4, 10]
             })
         }).addTo(countryGroup)
         marker.on("click", () => {
-            map.setView([count.country[`${cont}`].latitude, count.country[`${cont}`].longitude], 5);
+            map.setView(latLong, 5);
             displayMarkers(filterByCountry(cont));
         })
 

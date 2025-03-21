@@ -110,3 +110,11 @@ button {
     box-shadow: var(--main) 2px 2px;
 
 }
+
+.leaflet-popu {
+    /* transition: ease-in-out 2sec; */
+}
+
+.circle {
+    color: var(--thirdColor);
+}
