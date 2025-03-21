@@ -15,6 +15,10 @@ body {
     background-color: var(--fourthColor);
     font-family: 'Cabin Sketch';
 }
+body * {
+    margin: 0;
+    padding: 0;
+}
 .map-container {
     height: 80%;
 }
@@ -62,19 +66,27 @@ button {
     font-weight: 600;
 }
 
-.pop-up {
-    display: block;
-    width: 350px;
-    align-items: center;
-    text-align: center;
-    background-color: var(--thirdColor);
-}
 .pop-up span {
     text-decoration: underline;
     font-weight: 800;
+    border-radius: 10px;
+}
+.leaflet-popup-content {
+    width: 390px;
+    display: block;
+    width: 80%;
+    align-items: center;
+    text-align: center;
+    background-color: var(--thirdColor);
+    margin: 10px ;
+    padding: 0;
+    border-radius: 10px;
 }
 .leaflet-popup-content-wrapper {
-    background-color: var(--thirdColor);
+    background-color: var(--main);
+    display: flex;
+    align-items: center;
+    justify-content: center;
     color: var(--main);
     width: 400px;
     font-family: 'Urbanist';
@@ -82,6 +94,8 @@ button {
     font-size: 18px;
     border-radius: 10px;
     box-shadow: var(--firstColor) 2px 2px;
+    margin: 0;
+    padding: 0;
 }
 .pop-up img {
     width: 200px;

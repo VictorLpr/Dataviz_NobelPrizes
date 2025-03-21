@@ -136,6 +136,7 @@ async function wikiImgUrl(article) {
     const data = await response.json();
     const pages = Object.values(data.query.pages);
     let imageTitles = [];
+    console.log(pages)
     if (!pages[0].images) return "";
     imageTitles = pages[0].images.map((img) => img.title);
     article = article.split("_").join(" ");
@@ -162,13 +163,13 @@ function displayMarkers(laureates) {
         }
         if (marker) {            
             marker.on("click",async () => {
-                let content = `<div class="pop-up"><span>name</span> : ${laureate.knownName?.en ? laureate.knownName.en : laureate.fileName}<br><span>birth date</span> : ${laureate.birth?.date ? laureate.birth.date : "unknown"}`
+                let content = `<span>name</span> : ${laureate.knownName?.en ? laureate.knownName.en : laureate.fileName}<br><span>birth date</span> : ${laureate.birth?.date ? laureate.birth.date : "unknown"}`
                 if (laureate.death) {
                     content += `<br> <span>death date</span> : ${laureate.death.date}`
                 };
                 content += `<br><span>category</span> : ${laureate.nobelPrizes[0].category.en} <br> <span>award year</span> : ${laureate.nobelPrizes[0].awardYear}<br><span>motivation</span> : ${laureate.nobelPrizes[0].motivation.en}`;
                 let img = await wikiImgUrl(laureate.wikipedia.slug)
-                content += `<br><img src="${img}" style="width:100px;"</div>`
+                content += `<br><img src="${img}" style="width:100px;">`
                 marker.bindPopup(content).openPopup();
 
 
@@ -254,11 +255,9 @@ function filterLaureates() {
 
 function filterByCountry(country) {
     filteredBycountry = [];
-    console.log(country)
     for (let i = 0; i < filteredLaureates.length; i++) {
         if (filteredLaureates[i].birth?.place?.countryNow.en.split(" ").join("") == country) {
             filteredBycountry.push(filteredLaureates[i]);
-            console.log(filteredBycountry)
         }
     }
 }
@@ -276,7 +275,6 @@ function whichDisplay(laureate) {
 
 loadNoblePrizes('https://api.nobelprize.org/2.1/laureates?offset=0&limit=500');
 loadNoblePrizes('https://api.nobelprize.org/2.1/laureates?offset=500&limit=504');
-// console.log(loadImg("https://www.nobelprize.org/prizes/physics/2024/hopfield/facts/"))
 setTimeout(() => {
     filteredLaureates = allLaureates;
     countCountryContinent(allLaureates);
