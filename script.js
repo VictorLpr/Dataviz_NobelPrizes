@@ -72,7 +72,7 @@ for (let year = 1900; year <= 2025; year++) {
 function updateEndYear() {
     let selectedYear = endYear.value;
     endYear.innerHTML = `<option value="">end year</option>`;
-    for (let year = startYear.value; year <= 2025; year++) {
+    for (let year = startYear.value ? startYear.value : 1901; year <= 2025; year++) {
         endYear.innerHTML += `<option value="${year}">${year}</option>`;
 
     };
@@ -82,11 +82,12 @@ function updateEndYear() {
 function updateStartYear() {
     let selectedYear = startYear.value;
     startYear.innerHTML = `<option value="">start year</option>`;
-    for (let year = 1901; year <= endYear.value; year++) {
+    let end = endYear.value ? endYear.value : 2025;
+    for (let year = 1901; year <= end; year++) {
         startYear.innerHTML += `<option value="${year}">${year}</option>`;
 
     };
-    if (selectedYear <= endYear.value) startYear.value = selectedYear;
+    startYear.value = selectedYear;
 }
 //chargement des prix nobels
 async function loadNoblePrizes(url) {
