@@ -13,6 +13,8 @@ let which = 0;
 //création de la carte
 var map = L.map('map', {
     worldCopyJump: true,
+    zoomControl : false,
+    doubleClickZoom: false
 }).setView([22, 34.2], 3);
 
 map.setMinZoom(2);
