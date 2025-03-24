@@ -143,10 +143,9 @@ function displayMarkers(laureates) {
         }
 
     });
+    console.log(Object.entries(markers))
     for (const [pos, laureates] of Object.entries(markers)) {
-        let [lat, long] = (pos.split(","));
-        lat = parseFloat(lat);
-        long = parseFloat(long);
+        let [lat, long] = (pos.split(",")).map(x => parseFloat(x));
         let rad = 0.1;
         let totalLaureates = laureates.length;
 
