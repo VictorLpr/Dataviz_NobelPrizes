@@ -112,8 +112,6 @@ async function wikiImgUrl(article) {
     const data = await response.json();
     const pages = Object.values(data.query.pages);
     let imageTitles = [];
-    console.log(data)
-    console.log(pages)
     if (!pages[0].images) return "";
     imageTitles = pages[0].images.map((img) => img.title);
     article = article.split("_").join(" ");
@@ -122,7 +120,6 @@ async function wikiImgUrl(article) {
     const imgResponse = await fetch(`https://en.wikipedia.org/w/api.php?action=query&titles=${encodeURIComponent(imageTitles[0])}&prop=imageinfo&iiprop=url&format=json&origin=*`);
     const imgData = await imgResponse.json();
     const imgPages = Object.values(imgData.query.pages);
-    console.log(imgPages)
     return imgPages[0].imageinfo[0].url;
 }
 
@@ -149,13 +146,13 @@ function displayMarkers(laureates) {
         }
 
     });
-    console.log(markers)
     for (const [pos, laureates] of Object.entries(markers)) {
         let [lat, long] = (pos.split(","))
         lat = parseFloat(lat)
         long = parseFloat(long)
         let rad = 0.1;
         let totalLaureates = laureates.length
+
         laureates.forEach((laureate,index) => {
             let angle = (2 * Math.PI / totalLaureates) * index
             let x = rad * Math.cos(angle)
@@ -163,7 +160,6 @@ function displayMarkers(laureates) {
             let marker = L.marker([lat + x, long + y]).addTo(markerGroup)
             if (marker) {
                 marker.on("click", async () => {
-                    console.log(laureate)
                     let img = await wikiImgUrl(laureate.wikipedia.slug)
                     let content = img ? `<img src="${img}">` : "";
                     content += `<p><span>Name</span> : ${laureate.knownName?.en ? laureate.knownName.en : laureate.fileName}</p>`
@@ -215,7 +211,6 @@ function displayContinent(count) {
 function displayCountry(count) {
     clearAllLayers();
     which = 0;
-    console.log(count)
     for (const cont in count.country) {
         let latLong = [cont == "UnitedKingdom" ? 51.6 : count.country[`${cont}`].latitude, cont == "UnitedKingdom" ? -0.79 : count.country[`${cont}`].longitude]
         var circle = L.circle(latLong, {
