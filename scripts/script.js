@@ -161,7 +161,7 @@ function displayMarkers(laureates) {
                     className: 'emoji-marker',
                     html: `<div class="icon"><span style="font-size: 24px;">${emojiMap[category]}</span></div>`,
                     iconSize: [30, 30],
-                    iconAnchor: [0, 0]
+                    iconAnchor: [15, 0]
                 })
             }).addTo(markerGroup);
 
