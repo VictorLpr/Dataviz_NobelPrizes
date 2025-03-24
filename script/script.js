@@ -1,3 +1,4 @@
+import { continentPos } from "./data.js";
 const mapArea = document.getElementById("map");
 const genderFilter = document.getElementById("gender-filter");
 const categoryFilter = document.getElementById("category-filter");
@@ -8,32 +9,7 @@ const endYear = document.getElementById("end-year")
 let allLaureates = [];
 let filteredLaureates = [];
 let which = 0;
-let continentPos = {
-    Africa: {
-        latitude: 7.4,
-        longitude: 20
-    },
-    Asia: {
-        latitude: 51.8,
-        longitude: 82.7
-    },
-    Europe: {
-        latitude: 48,
-        longitude: 9
-    },
-    NorthAmerica: {
-        latitude: 33.5,
-        longitude: -98.8
-    },
-    SouthAmerica: {
-        latitude: -13.9,
-        longitude: -56.9
-    },
-    Oceania: {
-        latitude: -26,
-        longitude: 136.5
-    }
-};
+
 
 
 //création de la carte
