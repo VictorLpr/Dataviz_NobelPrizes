@@ -1,4 +1,4 @@
-import { continentPos } from "./data.js";
+import { continentPos, emojiMap } from "./data.js";
 const mapArea = document.getElementById("map");
 const genderFilter = document.getElementById("gender-filter");
 const categoryFilter = document.getElementById("category-filter");
@@ -159,27 +159,18 @@ function displayMarkers(laureates) {
             let angle = (2 * Math.PI / totalLaureates) * index
             let x = rad * Math.cos(angle)
             let y = rad * Math.sin(angle)
-            let category = laureate.nobelPrizes[0].category.en.toLowerCase();
+            let category = laureate.nobelPrizes[0].category.en.split(" ").join("").toLowerCase();
 
-            const emojiMap = {
-                physics: "🔭",
-                chemistry: "⚗️",
-                physiologyormedicine: "🩺",
-                literature: "📖",
-                peace: "🕊️",
-                economicsciences: "📊",
-            };
-            const emoji = emojiMap[category] || "🏆";
 
             let marker = L.marker([lat + x, long + y], {
                 icon: L.divIcon({
                     className: 'emoji-marker',
-                    html: `<span style="font-size: 24px;">${emoji}</span>`,
+                    html: `<span style="font-size: 24px;">${emojiMap[category]}</span>`,
                     iconSize: [30, 30],
                     iconAnchor: [15, 15]
                 })
             }).addTo(markerGroup);
-            
+
             if (marker) {
                 marker.on("click", async () => {
                     let img = await wikiImgUrl(laureate.wikipedia.slug)

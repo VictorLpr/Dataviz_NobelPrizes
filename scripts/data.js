@@ -24,3 +24,12 @@ export let continentPos = {
         longitude: 136.5
     }
 };
+
+export const emojiMap = {
+    physics: "🔭",
+    chemistry: "⚗️",
+    physiologyormedicine: "🩺",
+    literature: "📖",
+    peace: "🕊️",
+    economicsciences: "📊",
+};
