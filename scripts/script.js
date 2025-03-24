@@ -82,7 +82,7 @@ function countCountryContinent(laureates) {
     }
     laureates.forEach(laureate => {
         if (laureate.birth?.place?.continent) {
-            let countryName =(laureate.birth.place.continent.en).split(" ").join("")
+            let countryName = (laureate.birth.place.continent.en).split(" ").join("")
             if (count.continent[countryName] === undefined) {
                 count.continent[countryName] = 1;
             } else {
@@ -117,7 +117,7 @@ async function wikiImgUrl(article) {
     if (!pages[0].images) return "";
     imageTitles = pages[0].images.map((img) => img.title);
     article = article.split("_").join(" ");
-    imageTitles = imageTitles.filter((img) => img.toLowerCase().includes(article.slice(0,3).toLowerCase()));
+    imageTitles = imageTitles.filter((img) => img.toLowerCase().includes(article.slice(0, 3).toLowerCase()));
     if (imageTitles.length == 0) return "";
     const imgResponse = await fetch(`https://en.wikipedia.org/w/api.php?action=query&titles=${encodeURIComponent(imageTitles[0])}&prop=imageinfo&iiprop=url&format=json&origin=*`);
     const imgData = await imgResponse.json();
@@ -129,33 +129,59 @@ async function wikiImgUrl(article) {
 function displayMarkers(laureates) {
     clearAllLayers();
     which = 1;
-
+    let markers = {};
     laureates.forEach(laureate => {
-        
+
         if ((laureate.birth?.place?.cityNow?.latitude)) {
-            var marker = L.marker([parseFloat(laureate.birth.place.cityNow.latitude) + parseFloat(laureate.id / 100000), parseFloat(laureate.birth.place.cityNow.longitude) + parseFloat(laureate.id / 100000)]).addTo(markerGroup);
-            
+            let pos = `${laureate.birth.place.cityNow.latitude},${laureate.birth.place.cityNow.longitude}`
+            if (!(markers[pos])) {
+                markers[pos] = []
+            }
+            markers[pos].push(laureate);
+
         } else if ((laureate.birth?.place?.countryNow)) {
-            var marker = L.marker([laureate.birth.place.countryNow.latitude, laureate.birth.place.countryNow.longitude]).addTo(markerGroup);
-            
-        }
-        if (marker) {            
-            marker.on("click",async () => {
-                console.log(laureate)
-                let img = await wikiImgUrl(laureate.wikipedia.slug)
-                let content = img ? `<img src="${img}">` : "";
-                content += `<p><span>Name</span> : ${laureate.knownName?.en ? laureate.knownName.en : laureate.fileName}</p><p><span>Birth date</span> : ${laureate.birth?.date ? laureate.birth.date : "unknown"}</p>`
-                if (laureate.death) {
-                    content += `<p> <span>Death date</span> : ${laureate.death.date}</p>`
-                };
-                content += `<p><span>Category</span> : ${laureate.nobelPrizes[0].category.en}</p><p><span>Award year</span> : ${laureate.nobelPrizes[0].awardYear}</p><p><span>motivation</span> : ${laureate.nobelPrizes[0].motivation.en}</p>`;
-                marker.bindPopup(content).openPopup();
+            let pos = `${laureate.birth.place.countryNow.latitude},${laureate.birth.place.countryNow.longitude}`
+            if (!(markers[pos])) {
+                markers[pos] = [];
+            }
+            markers[pos].push(laureate);
 
-
-            })
         }
+
     });
-
+    console.log(markers)
+    for (const [pos, laureates] of Object.entries(markers)) {
+        let [lat, long] = (pos.split(","))
+        lat = parseFloat(lat)
+        long = parseFloat(long)
+        let rad = 0.1;
+        let totalLaureates = laureates.length
+        laureates.forEach((laureate,index) => {
+            let angle = (2 * Math.PI / totalLaureates) * index
+            let x = rad * Math.cos(angle)
+            let y = rad * Math.sin(angle)
+            let marker = L.marker([lat + x, long + y]).addTo(markerGroup)
+            if (marker) {
+                marker.on("click", async () => {
+                    console.log(laureate)
+                    let img = await wikiImgUrl(laureate.wikipedia.slug)
+                    let content = img ? `<img src="${img}">` : "";
+                    content += `<p><span>Name</span> : ${laureate.knownName?.en ? laureate.knownName.en : laureate.fileName}</p>`
+                    content += `<p><span>Birth date</span> : ${laureate.birth?.date ? laureate.birth.date : "unknown"}</p>`
+                    if (laureate.death) {
+                        content += `<p> <span>Death date</span> : ${laureate.death.date}</p>`
+                    };
+                    content += `<p><span>Category</span> : ${laureate.nobelPrizes[0].category.en}</p>`
+                    content += `<p><span>Award year</span> : ${laureate.nobelPrizes[0].awardYear}</p><p><span>motivation</span> : ${laureate.nobelPrizes[0].motivation.en}</p>`;
+                    marker.bindPopup(content).openPopup();
+        
+        
+                })
+            }
+        })
+        
+    }
+    
 }
 
 function displayContinent(count) {
@@ -191,7 +217,7 @@ function displayCountry(count) {
     which = 0;
     console.log(count)
     for (const cont in count.country) {
-        let latLong = [cont == "UnitedKingdom" ? 51.6 : count.country[`${cont}`].latitude,cont == "UnitedKingdom" ? -0.79 : count.country[`${cont}`].longitude]
+        let latLong = [cont == "UnitedKingdom" ? 51.6 : count.country[`${cont}`].latitude, cont == "UnitedKingdom" ? -0.79 : count.country[`${cont}`].longitude]
         var circle = L.circle(latLong, {
             color: '#588157',
             fillColor: '#588157',
@@ -254,12 +280,14 @@ function whichDisplay(laureate) {
     }
 }
 
-loadNoblePrizes('https://api.nobelprize.org/2.1/laureates?offset=0&limit=500');
-loadNoblePrizes('https://api.nobelprize.org/2.1/laureates?offset=500&limit=504');
-setTimeout(() => {
+async function firstLoad() {
+    await loadNoblePrizes('https://api.nobelprize.org/2.1/laureates?offset=0&limit=500');
+    await loadNoblePrizes('https://api.nobelprize.org/2.1/laureates?offset=500&limit=504');
     filteredLaureates = allLaureates;
-    displayContinent(countCountryContinent(filteredLaureates))
-}, 800)
+    whichDisplay(allLaureates);
+}
+
+firstLoad();
 
 mapArea.addEventListener('wheel', () => {
     setTimeout(() => {
