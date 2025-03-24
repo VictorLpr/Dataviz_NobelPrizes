@@ -10,8 +10,6 @@ let allLaureates = [];
 let filteredLaureates = [];
 let which = 0;
 
-
-
 //création de la carte
 var map = L.map('map', {
     worldCopyJump: true,
@@ -104,7 +102,6 @@ function countCountryContinent(laureates) {
             }
         }
     })
-    console.log(count)
     return count
 
 }
@@ -125,6 +122,7 @@ async function wikiImgUrl(article) {
     const imgResponse = await fetch(`https://en.wikipedia.org/w/api.php?action=query&titles=${encodeURIComponent(imageTitles[0])}&prop=imageinfo&iiprop=url&format=json&origin=*`);
     const imgData = await imgResponse.json();
     const imgPages = Object.values(imgData.query.pages);
+    console.log(imgPages)
     return imgPages[0].imageinfo[0].url;
 }
 
