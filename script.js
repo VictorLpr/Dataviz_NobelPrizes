@@ -7,7 +7,6 @@ const endYear = document.getElementById("end-year")
 
 let allLaureates = [];
 let filteredLaureates = [];
-// let filteredBycountry = [];
 let which = 0;
 let continentPos = {
     Africa: {
@@ -40,7 +39,7 @@ let continentPos = {
 //création de la carte
 var map = L.map('map', {
     worldCopyJump: true,
-}).setView([35.9, 34.2], 2);
+}).setView([22, 34.2], 3);
 
 map.setMinZoom(2);
 
