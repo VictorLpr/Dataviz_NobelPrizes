@@ -117,3 +117,10 @@ button {
 .circle {
     color: var(--thirdColor);
 }
+.icon  {
+    height: 38px;
+    width:35px;
+    background-color:rgb(203, 128, 183);
+    border-radius: 50%;
+    border: 1px black solid;
+}

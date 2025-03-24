@@ -165,9 +165,9 @@ function displayMarkers(laureates) {
             let marker = L.marker([lat + x, long + y], {
                 icon: L.divIcon({
                     className: 'emoji-marker',
-                    html: `<span style="font-size: 24px; background-color:rgb(203, 128, 183); border-radius: 50%">${emojiMap[category]}</span>`,
+                    html: `<div class="icon"><span style="font-size: 24px;">${emojiMap[category]}</span></div>`,
                     iconSize: [30, 30],
-                    iconAnchor: [15, 15]
+                    iconAnchor: [0, 0]
                 })
             }).addTo(markerGroup);
 
