@@ -157,7 +157,27 @@ function displayMarkers(laureates) {
             let angle = (2 * Math.PI / totalLaureates) * index
             let x = rad * Math.cos(angle)
             let y = rad * Math.sin(angle)
-            let marker = L.marker([lat + x, long + y]).addTo(markerGroup)
+            let category = laureate.nobelPrizes[0].category.en.toLowerCase();
+
+            const emojiMap = {
+                physics: "🔭",
+                chemistry: "⚗️",
+                physiologyormedicine: "🩺",
+                literature: "📖",
+                peace: "🕊️",
+                economicsciences: "📊",
+            };
+            const emoji = emojiMap[category] || "🏆";
+
+            let marker = L.marker([lat + x, long + y], {
+                icon: L.divIcon({
+                    className: 'emoji-marker',
+                    html: `<span style="font-size: 24px;">${emoji}</span>`,
+                    iconSize: [30, 30],
+                    iconAnchor: [15, 15]
+                })
+            }).addTo(markerGroup);
+            
             if (marker) {
                 marker.on("click", async () => {
                     let img = await wikiImgUrl(laureate.wikipedia.slug)
