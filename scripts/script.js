@@ -5,6 +5,7 @@ const categoryFilter = document.getElementById("category-filter");
 const applyFilters = document.getElementById("apply-filters");
 const startYear = document.getElementById("start-year")
 const endYear = document.getElementById("end-year")
+const resetFilters = document.getElementById("reset-filters")
 
 let allLaureates = [];
 let filteredLaureates = [];
@@ -38,9 +39,12 @@ let markerGroup = L.layerGroup().addTo(map);
 let continentGroup = L.layerGroup().addTo(map);
 let countryGroup = L.layerGroup().addTo(map);
 
-for (let year = 1900; year <= 2025; year++) {
-    startYear.innerHTML += `<option value="${year}">${year}</option>`;
-    endYear.innerHTML += `<option value="${year}">${year}</option>`;
+function setYearSelect() {
+    for (let year = 1900; year <= 2025; year++) {
+        startYear.innerHTML += `<option value="${year}">${year}</option>`;
+        endYear.innerHTML += `<option value="${year}">${year}</option>`;
+
+}
 
 };
 
@@ -289,6 +293,7 @@ function whichDisplay(laureate) {
 }
 
 async function firstLoad() {
+    setYearSelect();
     await loadNoblePrizes('https://api.nobelprize.org/2.1/laureates?offset=0&limit=500');
     await loadNoblePrizes('https://api.nobelprize.org/2.1/laureates?offset=500&limit=504');
     filteredLaureates = allLaureates;
@@ -306,6 +311,14 @@ mapArea.addEventListener('wheel', () => {
 applyFilters.addEventListener("click", () => {
     filterLaureates();
 });
+
+resetFilters.addEventListener("click", () => {
+    setYearSelect();
+    genderFilter.value = "";
+    categoryFilter.value = "";
+    which = 2;
+    whichDisplay(allLaureates);
+})
 
 startYear.addEventListener("change", () => {
     updateEndYear();
