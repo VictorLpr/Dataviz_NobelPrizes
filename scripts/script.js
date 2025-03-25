@@ -306,6 +306,7 @@ resetFilters.addEventListener("click", () => {
     genderFilter.value = "";
     categoryFilter.value = "";
     which = 2;
+    filteredLaureates = allLaureates;
     whichDisplay(allLaureates);
 })
 
