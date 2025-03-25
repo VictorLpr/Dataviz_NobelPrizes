@@ -25,6 +25,31 @@ Découvrez les lauréat.e.s, leurs catégories et leurs contributions grâce à 
 - **Leaflet API** (https://leafletjs.com).
 
 
-## Auteur.ice.s:
+
+**Nobel Prizes World Finder** offers a visual and engaging exploration of Nobel Prize data from around the world, from 1901 to the present.
+
+Discover the laureates, their categories, and their contributions through an interactive world map. 
+
+## Project aim:
+
+- Provide an intuitive interface for exploring Nobel Prize data
+- Highlight geographic and temporal trends in the laureates
+- Raise public awareness of the global impact of the laureates in their respective fields
+
+## Key Features:
+
+- **Planisphere**: View laureates by country and continent
+- **Advanced Filters**: Search by genre/organization, category, or year
+- **Laureate Details**: View detailed information by clicking on the corresponding markers
+
+## Technologies Used:
+
+- **Javascript**
+- **HTML/CSS**
+- **API**: Official Nobel Prize dataset available at [nobelprize.org](https://www.nobelprize.org).
+- **Leaflet API** (https://leafletjs.com).
+
+## Auteur.ice.s / Authors:
 
 - **Victor LEPRON**  | **Vanessa VALENCIA GARCIA** |**Marine GAREIN** 
+
