@@ -28,7 +28,7 @@ Découvrez les lauréat.e.s, leurs catégories et leurs contributions grâce à 
 
 # **Nobel Prizes World Finder - _Dataviz_** 
 
-This project offers a visual and engaging exploration of Nobel Prize data from around the world, from 1901 to the present.
+This project offers a visual and engaging exploration of Nobel Prize data around the world, from 1901 to the present.
 
 Discover the laureates, their categories, and their contributions through an interactive world map. 
 
@@ -41,8 +41,8 @@ Discover the laureates, their categories, and their contributions through an int
 ## Key Features:
 
 - **World map**: View laureates by country and continent
-- **Advanced Filters**: Search by genre/organization, category, or year
-- **Laureate Details**: View detailed information by clicking on the corresponding markers
+- **Advanced Filters**: Search by gender/organizations, category, or year
+- **Laureate Details**: View detailed informations by clicking on the corresponding markers
 
 ## Technologies Used:
 
