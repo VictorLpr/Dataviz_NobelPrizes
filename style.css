@@ -166,12 +166,12 @@ button {
 
 .display-names{
     display: flex;
-     flex-wrap: wrap;
-     flex-direction: row;
-     align-content: space-between;
-     justify-content: space-between;
+    flex-wrap: wrap;
+    flex-direction: row;
+    align-content: space-between;
+    justify-content: space-between;
     align-items: center;
-    animation: moveRight 2s infinite;
+    animation: moveRight 3s infinite;
     }
 
 .display-names p {
@@ -183,6 +183,15 @@ button {
         transform: translateX(100%);
     }
 
+    100%{
+        transform: translateX(-100%);
+    }
+}
+
+@keyframes moveLeft{
+    0% {
+        transform: translateX(100%);
+    }
     100%{
         transform: translateX(-100%);
     }

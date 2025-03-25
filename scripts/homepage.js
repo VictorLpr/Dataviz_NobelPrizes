@@ -9,7 +9,8 @@ async function loadNoblePrizes(url) {
 
 const displayLaureateNames = async () => {
     await loadNoblePrizes('https://api.nobelprize.org/2.1/laureates?offset=500&limit=504');
-    allLaureates.forEach(laureate => {
+    allLaureates.forEach((laureate, index) => {
+        console.log(index)
         if(laureate.knownName) {
         console.log(laureate.knownName.en);
         displayNames.innerHTML += `<p>${laureate.knownName.en}</p>`;
