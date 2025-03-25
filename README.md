@@ -53,5 +53,5 @@ Discover the laureates, their categories, and their contributions through an int
 
 ## Auteur.ice.s / Authors:
 
-- **Victor LEPRON**  | **Vanessa VALENCIA GARCIA** |**Marine GAREIN** 
+- **Victor LEPRON**  | **Vanessa VALENCIA GARCIA** | **Marine GAREIN** 
 
