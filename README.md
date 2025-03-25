@@ -26,7 +26,9 @@ Découvrez les lauréat.e.s, leurs catégories et leurs contributions grâce à 
 
 
 
-**Nobel Prizes World Finder** offers a visual and engaging exploration of Nobel Prize data from around the world, from 1901 to the present.
+# **Nobel Prizes World Finder - _Dataviz_** 
+
+This project offers a visual and engaging exploration of Nobel Prize data from around the world, from 1901 to the present.
 
 Discover the laureates, their categories, and their contributions through an interactive world map. 
 
@@ -46,7 +48,7 @@ Discover the laureates, their categories, and their contributions through an int
 
 - **Javascript**
 - **HTML/CSS**
-- **API**: Official Nobel Prize dataset available at [nobelprize.org](https://www.nobelprize.org).
+- **API**: Official Nobel Prize dataset available at [nobelprize.org](https://www.nobelprize.org/organization/developer-zone-2/).
 - **Leaflet API** (https://leafletjs.com).
 
 ## Auteur.ice.s / Authors:
