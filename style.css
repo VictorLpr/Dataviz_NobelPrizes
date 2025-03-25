@@ -131,10 +131,14 @@ button {
     color: var(--fourthColor);
 }
 
+
+/*////////// HOMEPAGE /////////*/
 .banniere{
+    height: 60px;
     background-color: var(--thirdColor);
     text-align: center;
     padding: 10px;
+    color: var(--firstColor);
 }
 
 .presentation{
@@ -150,6 +154,7 @@ button {
     align-items: center;
     display: flex;
     flex-direction: column;
+    color: var(--firstColor);
 }
 
 .presentation  p {
@@ -166,33 +171,65 @@ button {
 
 .display-names{
     display: flex;
-    flex-wrap: wrap;
-    flex-direction: row;
+    flex-direction: column;
     align-content: space-between;
     justify-content: space-between;
     align-items: center;
-    animation: moveRight 3s infinite;
-    }
+    flex-grow: 1;
+}
+.all-names {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    height: 100dvh;
+}
+.display-names div {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    height: 20%;
+    font-size: 2rem;
+    color: var(--fourthColor);
+    opacity: 0.2;
+}
+.ligne1,
+.ligne3,
+.ligne5 {
+    animation: moveRight 10s linear infinite;
+}
 
+.ligne2,
+.ligne4 {
+    animation: moveLeft 10s linear infinite;
+}
 .display-names p {
     padding: 15px;
+    width: max-content;
 }
 
 @keyframes moveRight {
     0% {
-        transform: translateX(100%);
+        transform: translateX(-30%);
     }
 
+    50%{
+        transform: translateX(30%);
+    }
     100%{
-        transform: translateX(-100%);
+        transform: translateX(-30%);
     }
 }
 
 @keyframes moveLeft{
     0% {
-        transform: translateX(100%);
+        transform: translateX(30%);
     }
-    100%{
-        transform: translateX(-100%);
+    50%{
+        transform: translateX(-30%);
+    }
+    100% {
+        transform: translateX(30%);
     }
 }
+/*////////// e.o : HOMEPAGE /////////*/
+

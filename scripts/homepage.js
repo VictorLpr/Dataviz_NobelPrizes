@@ -9,14 +9,17 @@ async function loadNoblePrizes(url) {
 
 const displayLaureateNames = async () => {
     await loadNoblePrizes('https://api.nobelprize.org/2.1/laureates?offset=500&limit=504');
-    allLaureates.forEach((laureate, index) => {
-        console.log(index)
-        if(laureate.knownName) {
-        console.log(laureate.knownName.en);
-        displayNames.innerHTML += `<p>${laureate.knownName.en}</p>`;
+    allLaureates.some((laureate, index) => {
+        if (laureate.knownName) {
+            document.querySelector(`.ligne${(index % 5) + 1}`).innerHTML += `<p>${laureate.knownName.en}</p>`;
         }
-        
+        if (index == 100) {
+            return true
+        }
+
     });
 };
+
+
 
 displayLaureateNames();
