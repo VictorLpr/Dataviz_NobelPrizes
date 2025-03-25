@@ -124,3 +124,10 @@ button {
     border-radius: 50%;
     border: 1px black solid;
 }
+
+.credit,
+a:link,
+a:visited {
+    color: var(--fourthColor);
+}
+
