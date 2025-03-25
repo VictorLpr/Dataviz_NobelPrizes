@@ -36,8 +36,7 @@ function setYearSelect() {
     for (let year = 1900; year <= 2025; year++) {
         startYear.innerHTML += `<option value="${year}">${year}</option>`;
         endYear.innerHTML += `<option value="${year}">${year}</option>`;
-}
-
+    }
 };
 
 function updateEndYear() {
@@ -45,7 +44,6 @@ function updateEndYear() {
     endYear.innerHTML = `<option value="">end year</option>`;
     for (let year = startYear.value ? startYear.value : 1901; year <= 2025; year++) {
         endYear.innerHTML += `<option value="${year}">${year}</option>`;
-
     };
     if (selectedYear >= startYear.value) endYear.value = selectedYear;
 }
@@ -56,10 +54,10 @@ function updateStartYear() {
     let end = endYear.value ? endYear.value : 2025;
     for (let year = 1901; year <= end; year++) {
         startYear.innerHTML += `<option value="${year}">${year}</option>`;
-
     };
     startYear.value = selectedYear;
 }
+
 //chargement des prix nobels
      async function loadNoblePrizes(url) {
     const res = await fetch(url);
@@ -70,7 +68,6 @@ function updateStartYear() {
     //     allLaureates.push(laureate)
     // })
 }
-
 
 function countCountryContinent(laureates) {
     let count = {
@@ -100,7 +97,6 @@ function countCountryContinent(laureates) {
         }
     })
     return count;
-
 }
 
 async function wikiImgUrl(article) {
@@ -141,9 +137,7 @@ function displayMarkers(laureates) {
             markers[pos].push(laureate);
 
         }
-
     });
-    console.log(Object.entries(markers))
     for (const [pos, laureates] of Object.entries(markers)) {
         let [lat, long] = (pos.split(",")).map(x => parseFloat(x));
         let rad = 0.1;
@@ -176,15 +170,11 @@ function displayMarkers(laureates) {
                     };
                     content += `<p><span>Category</span> : ${laureate.nobelPrizes[0].category.en}</p>`
                     content += `<p><span>Award year</span> : ${laureate.nobelPrizes[0].awardYear}</p><p><span>motivation</span> : ${laureate.nobelPrizes[0].motivation.en}</p>`;
-                    marker.bindPopup(content).openPopup();
-        
-        
+                    marker.bindPopup(content).openPopup();       
                 })
             }
-        })
-        
-    }
-    
+        })       
+    }    
 }
 
 function displayContinent(count) {
@@ -306,6 +296,7 @@ resetFilters.addEventListener("click", () => {
     genderFilter.value = "";
     categoryFilter.value = "";
     which = 2;
+    filteredLaureates = allLaureates;
     whichDisplay(allLaureates);
 })
 
