@@ -19,10 +19,10 @@ Découvrez les lauréat.e.s, leurs catégories et leurs contributions grâce à 
 
 ## Technologies utilisées:
 
-- **Javascript** 
+- **JavaScript** 
 - **HTML/CSS**
 - **API** : Dataset officiel des prix Nobel disponible sur (https://www.nobelprize.org/organization/developer-zone-2/).
-- **Leaflet API** (https://leafletjs.com).
+- **Leaflet JavaScript library** (https://leafletjs.com).
 
 
 
@@ -46,10 +46,10 @@ Discover the laureates, their categories, and their contributions through an int
 
 ## Technologies Used:
 
-- **Javascript**
+- **JavaScript**
 - **HTML/CSS**
 - **API**: Official Nobel Prize dataset available at (https://www.nobelprize.org/organization/developer-zone-2/).
-- **Leaflet API** (https://leafletjs.com).
+- **Leaflet JavaScript library** (https://leafletjs.com).
 
 ## Auteur.ice.s / Authors:
 
