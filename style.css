@@ -126,8 +126,64 @@ button {
 }
 
 .credit,
-a:link,
-a:visited {
+.credit a:link,
+.credit a:visited {
     color: var(--fourthColor);
 }
 
+.banniere{
+    background-color: var(--thirdColor);
+    text-align: center;
+    padding: 10px;
+}
+
+.presentation{
+    position: absolute;
+    top: 30%;
+    width: 40%;
+    left: 30%;
+    background-color: var(--fourthColor);
+    border-radius: 10px;
+    padding: 20px;
+    font-size: 20px;
+    text-align: justify;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+}
+
+.presentation  p {
+    padding: 10px;
+}
+.presentation a {
+    background-color: var(--main);
+    color: var(--thirdColor);
+    padding: 10px;
+    text-decoration: none;
+    border-radius: 5px;
+
+}
+
+.display-names{
+    display: flex;
+     flex-wrap: wrap;
+     flex-direction: row;
+     align-content: space-between;
+     justify-content: space-between;
+    align-items: center;
+    animation: moveRight 2s infinite;
+    }
+
+.display-names p {
+    padding: 15px;
+}
+
+@keyframes moveRight {
+    0% {
+        transform: translateX(100%);
+    }
+
+    100%{
+        transform: translateX(-100%);
+    }
+}

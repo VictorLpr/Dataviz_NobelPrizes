@@ -61,7 +61,7 @@ function updateStartYear() {
     startYear.value = selectedYear;
 }
 //chargement des prix nobels
-async function loadNoblePrizes(url) {
+     async function loadNoblePrizes(url) {
     const res = await fetch(url);
     const data = await res.json();
     allLaureates.push(...data.laureates);
