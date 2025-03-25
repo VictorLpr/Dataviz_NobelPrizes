@@ -21,7 +21,7 @@ Découvrez les lauréat.e.s, leurs catégories et leurs contributions grâce à 
 
 - **Javascript** 
 - **HTML/CSS**
-- **API** : Dataset officiel des prix Nobel disponible sur [nobelprize.org](https://www.nobelprize.org).
+- **API** : Dataset officiel des prix Nobel disponible sur (https://www.nobelprize.org/organization/developer-zone-2/).
 - **Leaflet API** (https://leafletjs.com).
 
 
@@ -48,7 +48,7 @@ Discover the laureates, their categories, and their contributions through an int
 
 - **Javascript**
 - **HTML/CSS**
-- **API**: Official Nobel Prize dataset available at [nobelprize.org](https://www.nobelprize.org/organization/developer-zone-2/).
+- **API**: Official Nobel Prize dataset available at (https://www.nobelprize.org/organization/developer-zone-2/).
 - **Leaflet API** (https://leafletjs.com).
 
 ## Auteur.ice.s / Authors:
