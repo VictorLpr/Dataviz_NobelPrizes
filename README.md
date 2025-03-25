@@ -38,7 +38,7 @@ Discover the laureates, their categories, and their contributions through an int
 
 ## Key Features:
 
-- **Planisphere**: View laureates by country and continent
+- **World map**: View laureates by country and continent
 - **Advanced Filters**: Search by genre/organization, category, or year
 - **Laureate Details**: View detailed information by clicking on the corresponding markers
 
