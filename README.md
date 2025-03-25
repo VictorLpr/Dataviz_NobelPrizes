@@ -9,12 +9,12 @@ Découvrez les lauréat.e.s, leurs catégories et leurs contributions grâce à 
 
 - Fournir une interface intuitive pour explorer les données des prix Nobel
 - Mettre en évidence les tendances géographiques et temporelles des lauréat.e.s
-- Sensibiliser le public à l'impact des contributions des lauréat.e.s dans leurs domaines respectifs
+- Sensibiliser le public à l'impact mondial des lauréat.e.s dans leurs domaines respectifs
 
 ## Fonctionnalités principales:
 
 - **Planisphère** : Visualisez les lauréat.e.s par pays et par continent
-- **Filtres avancés** : Recherchez par genre/organisation, catégorie ou année
+- **Filtres avancés** : Recherchez par genre/organisation, catégorie ou encore année
 - **Détails des lauréat.e.s** : Consultez les informations détaillées en cliquant sur les markers correspondants
 
 ## Technologies utilisées:
