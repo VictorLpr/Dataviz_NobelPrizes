@@ -9,7 +9,7 @@ const resetFilters = document.getElementById("reset-filters")
 
 let allLaureates = [];
 let filteredLaureates = [];
-let which = 0;
+let which = 0; // Permet de ne pas dupliquer l'affichage
 
 //création de la carte
 var map = L.map('map', {
@@ -32,6 +32,7 @@ let markerGroup = L.layerGroup().addTo(map);
 let continentGroup = L.layerGroup().addTo(map);
 let countryGroup = L.layerGroup().addTo(map);
 
+// Ajout des années dans les filtres
 function setYearSelect() {
     for (let year = 1900; year <= 2025; year++) {
         startYear.innerHTML += `<option value="${year}">${year}</option>`;
@@ -39,6 +40,7 @@ function setYearSelect() {
     }
 };
 
+// MAJ des années de fin 
 function updateEndYear() {
     let selectedYear = endYear.value;
     endYear.innerHTML = `<option value="">end year</option>`;
@@ -69,6 +71,7 @@ function updateStartYear() {
     // })
 }
 
+// Compte le nombre de prix nobels par continent et par pays
 function countCountryContinent(laureates) {
     let count = {
         continent: {},
@@ -99,6 +102,7 @@ function countCountryContinent(laureates) {
     return count;
 }
 
+// Récupération de l'url de l'image de l'API Wikipedia
 async function wikiImgUrl(article) {
     const url = `https://en.wikipedia.org/w/api.php?action=query&prop=images&titles=${encodeURIComponent(article)}&format=json&origin=*`;
     const response = await fetch(url);
@@ -116,6 +120,7 @@ async function wikiImgUrl(article) {
     return imgPages[0].imageinfo[0].url;
 }
 
+// Affichage des markers sur la carte
 function displayMarkers(laureates) {
     clearAllLayers();
     which = 1;
@@ -143,6 +148,7 @@ function displayMarkers(laureates) {
         let rad = 0.1;
         let totalLaureates = laureates.length;
 
+        // Répartition des groupes de markers en cercle 
         laureates.forEach((laureate,index) => {
             let angle = (2 * Math.PI / totalLaureates) * index;
             let x = rad * Math.cos(angle);
@@ -151,7 +157,7 @@ function displayMarkers(laureates) {
 
 
             let marker = L.marker([lat + x, long + y], {
-                icon: L.divIcon({
+                icon: L.divIcon({ // Remplacer les markers par les émojis correspondants aux catégories des Prix Nobel
                     className: 'emoji-marker',
                     html: `<div class="icon"><span style="font-size: 24px;">${emojiMap[category]}</span></div>`,
                     iconSize: [30, 30],
@@ -159,6 +165,7 @@ function displayMarkers(laureates) {
                 })
             }).addTo(markerGroup);
 
+            // Affichage des informations des lauréat.e.s dans les pop-up au click
             if (marker) {
                 marker.on("click", async () => {
                     let img = await wikiImgUrl(laureate.wikipedia.slug);
@@ -177,6 +184,7 @@ function displayMarkers(laureates) {
     }    
 }
 
+// Affichage des clusters verts par continent
 function displayContinent(count) {
     clearAllLayers();
 
@@ -197,7 +205,7 @@ function displayContinent(count) {
                 iconAnchor: [count.continent[cont] > 100 ? 10 : 7, 10]
             })
         }).addTo(continentGroup);
-        marker.on("click", () => {
+        marker.on("click", () => { // Au clic, focus sur le continent et change la carte
             map.setView(latLong, 4);
             displayCountry(countCountryContinent(filteredLaureates));
         });
@@ -231,12 +239,14 @@ function displayCountry(count) {
     }
 }
 
+// Nettoyage des calques
 function clearAllLayers() {
     markerGroup.clearLayers();
     continentGroup.clearLayers();
     countryGroup.clearLayers();
 }
 
+// Filtres en fonction des choix de l'utilisateur
 function filterLaureates() {
     filteredLaureates = allLaureates.filter((laureate) => {
         let genderMatch = genderFilter.value ? laureate.gender === genderFilter.value : true;
@@ -260,6 +270,7 @@ function filterByCountry(country) {
     return filteredBycountry;
 }
 
+// Choix de l'affichage en fonction du zoom
 function whichDisplay(laureate) {
     if (map.getZoom() > 4 && which != 1) {
         displayMarkers(laureate);
