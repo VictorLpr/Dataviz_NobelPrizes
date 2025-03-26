@@ -14,14 +14,12 @@ body {
     margin: 0;
     font-family: 'Urbanist';
     background-color: var(--main);
-
 }
 
 body * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-
 }
 
 .all {
@@ -43,7 +41,6 @@ body * {
     display: flex;
     align-items: center;
     justify-content: center;
-    
 }
 
 select,
@@ -62,7 +59,7 @@ button {
 }
 /*//////////////// eo : FILTER BAR ///////////////*/
 
-
+/*/////////////// MAP ///////////*/
 .map-container {
     flex-grow: 1;
 }
@@ -72,6 +69,7 @@ button {
     height: 100%;
     border-radius: 10px;
 }
+/*///////////// eo : MAP /////////*/
 
 /*//////////////// POPUP ///////////////*/
 .leaflet-popup-content span {
@@ -136,6 +134,7 @@ button {
     color: var(--fourthColor);
 }
 
+
 /*////////// HOMEPAGE /////////*/
 .banniere {
     height: 60px;
@@ -164,6 +163,7 @@ button {
 .presentation  p {
     padding: 10px;
 }
+
 .presentation a {
     background-color: var(--main);
     color: var(--thirdColor);
@@ -181,12 +181,14 @@ button {
     align-items: center;
     flex-grow: 1;
 }
+
 .all-names {
     display: flex;
     flex-direction: column;
     overflow: hidden;
     height: 100dvh;
 }
+
 .display-names div {
     display: flex;
     flex-direction: row;
@@ -201,12 +203,12 @@ button {
 .ligne1,
 .ligne3,
 .ligne5 {
-    animation: moveRight 13s linear infinite;
+    animation: moveRight 18s linear infinite;
 }
 
 .ligne2,
 .ligne4 {
-    animation: moveLeft 13s linear infinite;
+    animation: moveLeft 18s linear infinite;
 }
 
 .display-names p {
@@ -218,7 +220,6 @@ button {
     0% {
         transform: translateX(-30%);
     }
-
     50%{
         transform: translateX(30%);
     }
