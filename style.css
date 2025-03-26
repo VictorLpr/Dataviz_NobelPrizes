@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Urbanist:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nothing+You+Could+Do&display=swap');
 
 :root {
     --main:#3A5A40;
@@ -9,22 +10,22 @@
 }
 
 body {
-    width: 100%;
     padding: 0;
     margin: 0;
     font-family: 'Urbanist';
     background-color: var(--main);
 
 }
+
 body * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 
 }
+
 .all {
     height: 100dvh;
-
     display: flex;
     flex-direction: column;
 }
@@ -76,6 +77,7 @@ button {
 .leaflet-popup-content span {
     font-weight: 800;
 }
+
 .leaflet-popup-content {
     display: block;
     text-align: center;
@@ -84,9 +86,11 @@ button {
     border-radius: 10px;
     padding: 5px;
 }
+
 .leaflet-popup-content p {
     margin: 0;
 }
+
 .leaflet-popup-content-wrapper {
     background-color: var(--main);
     display: flex;
@@ -99,8 +103,8 @@ button {
     font-size: 18px;
     border-radius: 10px;
     box-shadow: var(--firstColor) 2px 2px;
-
 }
+
 .leaflet-popup-content img {
     max-width: 200px;
     height: 100px;
@@ -117,6 +121,7 @@ button {
 .circle {
     color: var(--thirdColor);
 }
+
 .icon  {
     height: 38px;
     width:35px;
@@ -131,9 +136,8 @@ button {
     color: var(--fourthColor);
 }
 
-
 /*////////// HOMEPAGE /////////*/
-.banniere{
+.banniere {
     height: 60px;
     background-color: var(--thirdColor);
     text-align: center;
@@ -141,7 +145,7 @@ button {
     color: var(--firstColor);
 }
 
-.presentation{
+.presentation {
     position: absolute;
     top: 30%;
     width: 40%;
@@ -169,7 +173,7 @@ button {
 
 }
 
-.display-names{
+.display-names {
     display: flex;
     flex-direction: column;
     align-content: space-between;
@@ -188,22 +192,25 @@ button {
     flex-direction: row;
     align-items: center;
     height: 20%;
-    font-size: 2rem;
+    font-size: 2.8rem;
     color: var(--fourthColor);
-    opacity: 0.2;
+    opacity: 0.4;
+    font-family: "Nothing You Could Do", cursive;
 }
+
 .ligne1,
 .ligne3,
 .ligne5 {
-    animation: moveRight 10s linear infinite;
+    animation: moveRight 13s linear infinite;
 }
 
 .ligne2,
 .ligne4 {
-    animation: moveLeft 10s linear infinite;
+    animation: moveLeft 13s linear infinite;
 }
+
 .display-names p {
-    padding: 15px;
+    padding: 30px;
     width: max-content;
 }
 

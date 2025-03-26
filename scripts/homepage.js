@@ -20,6 +20,4 @@ const displayLaureateNames = async () => {
     });
 };
 
-
-
 displayLaureateNames();

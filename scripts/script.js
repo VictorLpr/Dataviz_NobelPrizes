@@ -16,7 +16,7 @@ var map = L.map('map', {
     worldCopyJump: true,
     zoomControl : false,
     doubleClickZoom: false
-}).setView([22, 34.2], 3);
+}).setView([22, 34.2], 2);
 
 map.setMinZoom(2);
 
